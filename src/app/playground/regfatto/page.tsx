@@ -56,7 +56,7 @@ export default function RegexPage() {
         <small>
           Source code available at{" "}
           <ExternalLink href="https://github.com/ellaboevans/eelabo.xyz/blob/main/src/app/playground/regfatto/page.tsx">
-            @topia/github.io/regfatto
+            @eelabo/github.io/regfatto
           </ExternalLink>
         </small>
       </div>

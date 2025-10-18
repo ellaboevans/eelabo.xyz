@@ -1,6 +1,47 @@
 import Back from "@/components/back";
 import ExternalLink from "@/components/external-link";
 import PasswordGenerator from "./_components/password-generator";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Password Generator",
+  description: "A minimal, interactive password generator",
+  openGraph: {
+    title: "Password Generator",
+    description: "A minimal, interactive password generator",
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/playground/password-generator`,
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
+        width: 1200,
+        height: 1000,
+      },
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
+        width: 1200,
+        height: 1000,
+      },
+    ],
+    type: "article",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Password Generator",
+    description: "A minimal, interactive password generator",
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
+        width: 1200,
+        height: 1000,
+      },
+      {
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
+        width: 1200,
+        height: 1000,
+      },
+    ],
+  },
+};
 
 export default function GeneratorPage() {
   return (
@@ -16,6 +57,14 @@ export default function GeneratorPage() {
         criteria.
       </p>
       <PasswordGenerator />
+      <div className="mt-8">
+        <small>
+          Source code available at{" "}
+          <ExternalLink href="https://github.com/ellaboevans/eelabo.xyz/blob/main/src/app/playground/password-generator/page.tsx">
+            @eelabo/github.io/password-generator
+          </ExternalLink>
+        </small>
+      </div>
     </div>
   );
 }

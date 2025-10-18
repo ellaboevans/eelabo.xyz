@@ -56,7 +56,7 @@ export default function KeyppPage() {
         <small>
           Source code available at{" "}
           <ExternalLink href="https://github.com/ellaboevans/eelabo.xyz/tree/main/src/app/playground/keypp">
-            @topia/github.io/keypp
+            @eelabo/github.io/keypp
           </ExternalLink>
         </small>
       </div>
