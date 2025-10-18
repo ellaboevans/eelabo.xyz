@@ -1,0 +1,123 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --background: oklch(0.99 0.0164 107.04);
+  /* --foreground: oklch(0.17 0.0041 106.83); */
+  --foreground: #000000;
+  --background-dark: var(--foreground);
+  --foreground-dark: var(--background);
+  --accent: #f59e0b;
+  --focus-ring: 1px solid #f59e0b;
+}
+
+
+*:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+*:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.dark ::selection {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background-color: var(--background-dark);
+  color: var(--foreground-dark);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  @keyframes rotateBadge {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-rotate-slow {
+    animation: rotateBadge 25s linear infinite;
+  }
+}
+
+
+@keyframes shootingStar {
+  0% {
+    transform: translateX(-220px);
+  }
+  100% {
+    transform: translateX(1200px);
+  }
+}
+
+.animate-shootingStar {
+  animation: shootingStar 5.5s ease-in-out infinite;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+body {
+  @apply font-(family-name:--font-paragraph) font-medium leading-relaxed text-pretty tracking-tight text-stone-600 dark:text-stone-300;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply font-(family-name:--font-heading)  text-stone-900 dark:text-stone-100;
+}
+
+.good-to-know {
+  @apply border-l-2 text-sm px-4 py-2 border-stone-300 bg-stone-100/10  dark:border-stone-200 dark:bg-stone-50/5;
+}
+
+.info {
+  @apply bg-blue-50 my-4 p-2 border-l-blue-300 border-l-2   border-blue-300 dark:border-blue-900 dark:bg-blue-950/40;
+}
+
+.info > h2,
+.info > h3 {
+  @apply text-blue-400;
+}
+
+.warning {
+  @apply my-4 p-4  border-l-red-300 border-l-2 bg-red-50 dark:bg-[#3D2323] border-red-300  dark:border-red-300;
+}
+
+.warning > h1,
+.warning > h2,
+.warning > h3 {
+  @apply dark:text-red-300 text-red-500;
+}
+
+/* Code block styling */
+pre {
+  font-family: var(--font-mono);
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+/* Ensure proper contrast in dark mode */
+.dark pre {
+  background-color: rgb(28 25 23);
+  color: rgb(245 245 244);
+}
+
+.dark code {
+  background-color: rgb(41 37 36);
+  color: rgb(245 245 244);
+}
