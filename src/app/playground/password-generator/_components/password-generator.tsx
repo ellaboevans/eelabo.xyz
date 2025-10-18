@@ -69,11 +69,12 @@ export default function PasswordGenerator() {
                 evaluateStrength(e.target.value);
               }}
               placeholder="Type your password..."
-              className="w-full px-4 py-2 rounded-lg bg-transparent border border-neutral-700 focus:outline-none focus:ring-1 focus:ring-amber-400 transition-colors"
+              className="w-full px-4 py-2 bg-transparent rounded text-stone-900 border dark:border-stone-400 dark:text-stone-100 focus:outline-none dark:focus:ring-1 dark:focus:ring-amber-400 transition-colors"
             />
             <button
               onClick={() => copyToClipBoard(password)}
-              className="absolute top-1/2 right-2 -translate-y-1/2 text-sm text-amber-500 hover:text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded px-1"
+              disabled={!password}
+              className="absolute top-1/2 right-2 -translate-y-1/2 text-sm text-amber-500 hover:text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-400 rounded disabled:opacity-50 disabled:cursor-not-allowed px-1"
             >
               {copied ? "Copied!" : "Copy"}
             </button>
