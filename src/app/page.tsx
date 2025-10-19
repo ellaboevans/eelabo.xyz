@@ -2,11 +2,21 @@ import Link from "next/link";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { projects, techInhabitants, tools } from "@/lib/constants/data";
 import ExternalLink from "@/components/external-link";
+import { homeSchema } from "@/schema/home-schema";
+import Head from "next/head";
 
 export default function Home() {
   const featuredProjects = projects.slice(0, 2);
   return (
     <div>
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(homeSchema),
+          }}
+        />
+      </Head>
       <div className="mt-8">
         <div>
           <span>
@@ -124,7 +134,7 @@ export default function Home() {
                         key={index}
                         className="bg-gray-800 !text-red-400 px-1 rounded text-sm font-mono"
                       >
-                        {part.slice(1, -1)} 
+                        {part.slice(1, -1)}
                       </code>
                     ) : (
                       part

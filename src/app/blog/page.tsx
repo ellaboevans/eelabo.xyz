@@ -45,13 +45,17 @@ export default async function Blog() {
     return (
       <div className="">
         <div>
-          <h1 className="text-4xl  pb-1 font-bold mt-8">Utopia</h1>
+          <h1 className="text-4xl  pb-1 font-bold mt-8">Philosophy</h1>
         </div>
         <p>
           This is where i share my thoughts, projects and discoveries in web dev technologies and
           software engineering.
         </p>
-        {posts.length === 0 ? <p>No blog posts published.</p> : <BlogView posts={posts} />}
+        {posts.length === 0 ? (
+          <p className="mt-4">No blog posts published yet.</p>
+        ) : (
+          <BlogView posts={posts} />
+        )}
       </div>
     );
   } catch (error) {

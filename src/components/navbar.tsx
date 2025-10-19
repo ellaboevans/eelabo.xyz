@@ -7,10 +7,10 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const routes = [
-  // {
-  //   label: "Blog",
-  //   path: "/blog",
-  // },
+  {
+    label: "Blog",
+    path: "/blog",
+  },
   {
     label: "Playground",
     path: "/playground",
