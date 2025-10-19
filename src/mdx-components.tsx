@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import ExternalLink from "@/components/external-link";
+import CopyToClipboard from "./components/copy-to-clipboard";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -22,8 +23,14 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         );
       }
       return (
-        <div className={`font-mono text-sm ${className}`} {...props}>
-          {children}
+        <div
+          className={`font-mono flex items-start group relative text-sm ${className}`}
+          {...props}
+        >
+          <div>{children}</div>
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute h-fit -top-1.5 right-0 duration-200">
+            <CopyToClipboard children={children} />
+          </div>
         </div>
       );
     },
