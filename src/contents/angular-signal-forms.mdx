@@ -1,12 +1,318 @@
 ---
-title: "Angular Signal Forms — A Fresh Era for Reactive Forms"
+title: "Signal Forms in Angular: Rethinking Form Handling with Signals"
 description: "Discover how Angular’s new Signal Forms simplify form creation, validation, and submission with a reactive signal-based API."
 keywords: ["Angular", "Signal Forms", "Reactive Forms", "Validation", "Signals API"]
 author: "Evans Elabo"
-published: false
-coverImage: "https://ik.imagekit.io/i7gyrkpch/portfolio/Abstract%20Burst%20of%20Colors.jpeg?updatedAt=1744931600751"
+published: true
+coverImage: "https://ik.imagekit.io/kkldhhslb/signal-forms-thumbnail.png?updatedAt=1760882798093"
 ---
 
-A few days ago, something exciting happened in the Angular world — the **experimental Signal Forms** feature branch was merged into Angular’s main branch.  
-This unlocks access to one of the most awaited improvements in Angular — **signal-based forms**.
+In this post we will be discussing the **New Angular Signal Forms** feature, which will be introduced in Angular 21 as an experimental feature for tries. This won't be a very detailed introduction to the **`Signal Forms`** but at least it will help to set the pace to get started with experimenting with this feature.
+
+But to look at it further I would recommend you also watch this youtube tutorial made by [**Dmytro Mezhenskyi**](https://www.youtube.com/@DecodedFrontend)
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/CEAVN_pkCXU" title="Signal Forms Custom Controls — Simplifying ControlValueAccessor" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullscreen></iframe>
+
+
+## Introducing Angular Signal Forms
+
+Signal Forms introduce a modern approach to building and managing forms in Angular. By leveraging signals, they offer a more declarative and efficient way to handle form state and validation. While conceptually closer to **`Reactive Forms`** than **`Template-driven Forms`**, Signal Forms replace Observables with Signals under the hood. This shift aligns more naturally with Angular’s reactivity model and change detection system. With their introduction, the Angular team has reimagined and redesigned the forms API to deliver a cleaner, more intuitive developer experience.
+
+The example form consists of two required fields — **`First Name`** and **Last Name** — along with an optional section that appears dynamically. This optional field, **`Reason for subscribing`**, only becomes **`visible (and required)`** when the user checks the **`Subscribe to newsletter`** checkbox.
+
+This setup demonstrates how Signal Forms handle conditional validation and dynamic UI updates in a clean, declarative way.
+
+![Signal Forms Example shot](https://ik.imagekit.io/kkldhhslb/basic-profile-form.png?updatedAt=1760873357059)
+
+## Building Forms with Signals - Step 1
+
+At the core of Angular’s new Signal Forms API lies the `form()` function. Rather than manually creating `FormGroup` and `FormControl` instances, you simply provide a signal-based model representing your form’s state. Angular then automatically generates a reactive, signal-driven form for you. In this example, that model is defined as a `FormModel` object.
+
+```typescript
+  interface Profile {
+    firstName: string;
+    lastName: string;
+    subscribe: boolean;
+    reason: string;
+  }
+
+ protected readonly profile = signal<Profile>({
+    firstName: '',
+    lastName: '',
+    subscribe: false,
+    reason: '',
+  });
+```
+At this point, we use the `form()` function to turn our model into a reactive signal form:
+
+```typescript
+protected readonly profileForm = form(this.profile);
+```
+
+And just like that, the form is ready to use.
+
+### Connecting Form Inputs Using the `[field]` Directive:
+
+In the template, we don’t need `formControlName` or `ngModel` anymore. Instead, we use the new `[field]` directive to connect form controls to input elements:
+
+```html
+<h2>Basic Profile Form</h2>
+<form (submit)="submitForm(); $event.preventDefault()">
+  <label>
+    First Name:
+    <input [field]="profileForm.firstName" type="text" />
+  </label>
+
+  <label>
+    Last Name:
+    <input [field]="profileForm.lastName" type="text" />
+  </label>
+
+  <label class="checkbox-group">
+    <input [field]="profileForm.subscribe" type="checkbox" />
+    Subscribe to newsletter
+  </label>
+
+  @if (profile().subscribe) {
+  <textarea
+    [field]="profileForm.reason"
+    placeholder="Why are you subscribing?"
+    class="textarea"
+  ></textarea>
+  }
+
+  <button type="submit" class="btn">Submit</button>
+</form>
+
+```
+The `[field]` directive simplifies form binding by removing the need for manual control lookups. It automatically links each model field to its input in a clear and declarative way.
+
+
+### Adding Validation to the Form - Step 2
+
+To make our form more robust, we’ll add validation. Signal Forms lets you define validation rules directly within the `form()` function, keeping your form logic clean and declarative. Here’s how:
+
+```typescript
+  protected readonly profileForm = form(this.profile, (path) => {
+    required(path.firstName),
+    minLength(path.firstName, 3),
+    maxLength(path.firstName, 50),
+
+    required(path.lastName),
+    minLength(path.lastName, 3),
+    maxLength(path.lastName, 50);
+  });
+```
+
+To show the correct error message, we check for each specific validation error:
+
+```html
+  <label>
+    First Name:
+    <input [field]="profileForm.firstName" type="text" />
+  </label>
+  @for(error of profileForm.firstName().errors(); track $index){
+    @if(error.kind === 'required'){
+      <div class="error-text">This field is required</div>
+    } @else if(error.kind === 'minLength'){
+      <div class="error-text">Min length is 3</div>
+    } @else if(error.kind === 'maxLength'){
+      <div class="error-text">Max length is 50</div>
+    }
+  }
+
+   <label>
+    Last Name:
+    <input [field]="profileForm.lastName" type="text" />
+  </label>
+  @for(error of profileForm.lastName().errors(); track $index){
+     @if(error.kind === 'required'){
+      <div class="error-text">This field is required</div>
+    } @else if(error.kind === 'minLength'){
+      <div class="error-text">Min length is 3</div>
+    } @else if(error.kind === 'maxLength'){
+      <div class="error-text">Max length is 50</div>
+    }
+  }
+
+  <button type="submit" [disabled]="!profileForm().valid()" class="btn">Submit</button>
+```
+
+This works — but it’s **`verbose`**, **`repetitive`**, and becomes **harder** to maintain as more validators are added.
+
+#### Attaching Messages to Validators - Step 2.1
+
+Signal Forms make this easier by allowing us to define messages directly within validators. This removes the need for repetitive `if/else` checks, we can simply render the provided message.
+
+```typescript
+protected readonly profileForm = form(this.profile, (path) => {
+  required(path.firstName, { message: 'First name is required' }),
+  minLength(path.firstName, 3, { message: 'Min length is 3' }),
+  maxLength(path.firstName, 50, {message: 'Max length is 50'}),
+
+  required(path.lastName, { message: 'Last name is required' }),
+  minLength(path.lastName, 3, { message: 'Min length is 3' }),
+  maxLength(path.lastName, 50, { message: 'Max length is 50' });
+});
+```
+The template now becomes much simpler:
+
+```html
+  <label>
+    First Name:
+    <input [field]="profileForm.firstName" type="text" />
+  </label>
+  @for(error of profileForm.firstName().errors(); track $index){
+    <p class="error-text">{{ error.message }}</p>
+  }
+
+  <label>
+    Last Name:
+    <input [field]="profileForm.lastName" type="text" />
+  </label>
+  @for(error of profileForm.lastName().errors(); track $index){
+    <p class="error-text">{{ error.message }}</p>
+  }
+```
+#### Reusing Validation with Schemas - Step 2.2
+
+Notice that both `firstName` and `LastName` share the same validation rules. Instead of duplicating them, we can define a reusable `schema` and `apply` it to multiple fields.
+
+```typescript
+import { schema, apply } from '@angular/forms/signals';
+
+const textSchema = schema<string>((fieldPath) => {
+  required(fieldPath, { message: 'This field is required' });
+  minLength(fieldPath, 3);
+  maxLength(fieldPath, 50);
+});
+
+protected readonly profileForm = form(this.profile, (path) => {
+    apply(path.firstName, textSchema);
+    apply(path.lastName, textSchema);
+  });
+
+```
+
+**Cleaner, DRY, and reusable across different forms**.
+
+### Conditional Validation - Step 3
+
+Sometimes, validation rules aren’t fixed — they depend on other fields in the form. For example, in our profile form, the subscription reason field should only be required when the user checks the Subscribe to newsletter checkbox.
+
+In traditional Angular forms, this typically involved extra boilerplate — subscribing to `valueChanges`, manually updating validators, and calling `updateValueAndValidity()`.
+
+Signal Forms simplify this process. Validators can now include a when condition that determines whether they should run.
+
+Here’s how we can add a conditional validator for reason:
+
+```typescript
+protected readonly profileForm = form(this.profile, (path) => {
+    apply(path.firstName, textSchema);
+    apply(path.lastName, textSchema);
+
+    required(path.reason, {
+      when: ({ valueOf }) => valueOf(path.subscribe),
+      message: 'Reason is required when subscribing',
+    });
+  });
+```
+
+Alternatively, the same conditional validator for reason can also be expressed more succinctly like this:
+
+```typescript
+protected readonly profileForm = form(this.profile, (path) => {
+    apply(path.firstName, textSchema);
+    apply(path.lastName, textSchema);
+
+    // required(path.reason, {
+    //   when: ({ valueOf }) => valueOf(path.subscribe),
+    //   message: 'Reason is required when subscribing',
+    // });
+
+    applyWhen(path.reason, ({ valueOf }) => valueOf(path.subscribe), textSchema);
+  });
+```
+
+The template remains largely the same — we simply include an error display for the **`reason`** field:
+
+```html
+ <label class="checkbox-group">
+    <input [field]="profileForm.subscribe" type="checkbox" />
+    Subscribe to newsletter
+  </label>
+
+  @if (profile().subscribe) {
+    <textarea
+      [field]="profileForm.reason"
+      placeholder="Why are you subscribing?"
+      class="textarea"
+    ></textarea>
+
+    @for(error of profileForm.reason().errors(); track error){
+      <p class="error-text">{{ error.message }}</p>
+    }
+  }
+```
+
+Now, the form requires the **subscription reason** only when it’s applicable.
+
+### Handling Submissions - Step 4
+
+Forms don’t just validate input — they usually need to send data to a backend. Signal Forms come with built-in helpers to simplify this as well.
+
+With the new `submit()` function from `@angular/forms/signals`, you can:
+
+- Track **`submitting`** state directly in the form
+- Handle **`server errors`** as part of the form’s error system
+- Reset the form after a successful submission
+
+Here’s how we can wire up our conference talk proposal form with a submission handler:
+
+```typescript
+protected submitForm() {
+    submit(this.profileForm, async (form) => {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 500)); //fake async operation
+        console.log("FORM_DATA:", this.profile())
+        form().reset(); 
+      return undefined;
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          return [
+            {
+              kind: 'SERVER_ERROR',
+              message: error.message,
+            },
+          ];
+        }
+      }
+    });
+  }
+```
+
+The **`.submitting()`** signal allows the submit button to be disabled during form submission.
+
+```html
+<button
+  type="submit"
+  [disabled]="!profileForm().valid() || profileForm().submitting()"
+  class="btn"
+>
+  Submit
+</button>
+```
+The submit button becomes active only when the form is valid and submission is not in progress.
+
+### Key Takeaways
+
+Signal Forms bring a fresh, modern approach to building forms in Angular. For years, developers have had to manage verbose FormGroup setups, wire up valueChanges subscriptions, duplicate validator logic, and write endless `if/else` blocks for error messages.
+
+With Signal Forms, all of this becomes dramatically simpler. Validators are declarative, bindings are direct with `[field]`, and conditional logic can be handled elegantly without boilerplate.
+
+Even in this experimental version of `Angular v21.next`, it’s clear that Signal Forms are shaping up to be one of the most impactful improvements to Angular’s developer experience. If you’ve ever been frustrated by Angular’s old form APIs, this is the feature you’ve been waiting for.
+
+### See What's Changed
+
+The `Control` directive has been renamed `Field` is the latest pre-release `(next.8)`. [refactor(forms): rename the control directive to the field directive #64300](https://github.com/angular/angular/pull/64300) 
 
