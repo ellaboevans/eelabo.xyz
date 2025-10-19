@@ -13,18 +13,18 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       const isInline = !className;
       if (isInline) {
         return (
-          <code
+          <span
             className="font-mono text-sm bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 px-1 py-0.5 rounded"
             {...props}
           >
             {children}
-          </code>
+          </span>
         );
       }
       return (
-        <code className={`font-mono text-sm ${className}`} {...props}>
+        <div className={`font-mono text-sm ${className}`} {...props}>
           {children}
-        </code>
+        </div>
       );
     },
     pre: ({ children, ...props }) => (
