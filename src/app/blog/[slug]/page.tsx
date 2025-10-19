@@ -85,7 +85,7 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
         prose-img:h-auto prose-p:text-stone-700 dark:prose-li:text-stone-300 prose-strong:text-inherit prose-li:text-stone-700 dark:prose-p:text-stone-300 prose-img:object-cover prose-img:object-center dark:prose-a:text-stone-300"
       >
         <Back />
-        <h1 className="!leading-10">{title}</h1>
+        <h1 className="!leading-10 font-extrabold">{title}</h1>
         <div className="flex text-xs sm:text-sm items-center gap-2 justify-between">
           <section className="flex items-center gap-2">
             <p className="text-stone-700  !my-0">{format(createdAt, "MMMM d, yyyy")}</p>
@@ -99,9 +99,9 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
             })}
           </p>
         </div>
-        <div className="w-full h-auto mt-10 max-h-72 sm:max-h-96 overflow-hidden rounded-lg">
-          <Image src={coverImage} alt={slug} width={500} height={500} />
-        </div>
+        {/* <div className="w-full outline mt-10 sm:max-h-96 overflow-hidden rounded-lg"> */}
+        <Image src={coverImage} alt={slug} width={500} height={500} className="h-full w-full" />
+        {/* </div> */}
         <Post />
       </article>
     </BlogPostWrapper>
