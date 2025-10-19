@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
-import { Geist_Mono, Sora } from "next/font/google";
+// import localFont from "next/font/local";
+import { Geist_Mono, Sora, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar";
 import ThemeProviderWithMeta from "../lib/provider";
@@ -8,32 +8,32 @@ import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 import Circle from "@/components/circle";
 
-const satoshi = localFont({
-  src: [
-    {
-      path: "../../public/fonts/Satoshi-Regular.woff2",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/Satoshi-Medium.woff2",
-      weight: "500",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/Satoshi-Bold.woff2",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../../public/fonts/Satoshi-Light.woff2",
-      weight: "300",
-      style: "normal",
-    },
-  ],
-  variable: "--font-heading",
-  display: "swap",
-});
+// const satoshi = localFont({
+//   src: [
+//     {
+//       path: "../../public/fonts/Satoshi-Regular.woff2",
+//       weight: "400",
+//       style: "normal",
+//     },
+//     {
+//       path: "../../public/fonts/Satoshi-Medium.woff2",
+//       weight: "500",
+//       style: "normal",
+//     },
+//     {
+//       path: "../../public/fonts/Satoshi-Bold.woff2",
+//       weight: "700",
+//       style: "normal",
+//     },
+//     {
+//       path: "../../public/fonts/Satoshi-Light.woff2",
+//       weight: "300",
+//       style: "normal",
+//     },
+//   ],
+//   variable: "--font-heading",
+//   display: "swap",
+// });
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
@@ -46,6 +46,13 @@ const geist = Sora({
   subsets: ["latin"],
   variable: "--font-paragraph",
   weight: ["400", "500", "600", "700", "300"],
+  display: "swap",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-heading",
+  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -116,7 +123,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <body
-        className={`${satoshi.variable} ${geistMono.variable} ${geist.variable} bg-(background:--background) text-(color:--foreground) dark:bg-(background:--background-dark) dark:text-(color:--foreground-dark) antialiased`}
+        className={`${geistMono.variable} ${geist.variable} ${openSans.variable} bg-(background:--background) text-(color:--foreground) dark:bg-(background:--background-dark) dark:text-(color:--foreground-dark) antialiased`}
       >
         <div className="min-h-screen max-h-[150vh] w-full relative">
           <div
