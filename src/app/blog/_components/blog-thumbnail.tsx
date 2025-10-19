@@ -6,7 +6,7 @@ export default function BlogThumbnail({ posts }: { posts: ContentMetadata[] }) {
   return posts.map((post) => (
     <li key={post.slug} className="group transition-all duration-300">
       <Link href={`/blog/${post.slug}`} className="block">
-        <div className="relative h-44 w-full overflow-hidden rounded-lg mb-3 transition-all duration-300">
+        <div className="relative h-52 w-full overflow-hidden rounded-lg mb-3 transition-all duration-300">
           <Image
             src={post.coverImage}
             alt={post.title}
