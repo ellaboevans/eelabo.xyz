@@ -52,25 +52,27 @@ export const tools = [
 ];
 
 export const TypingQuotes = [
-  "i know what it is like to lose to feel so desperately that you are right yet to fail nonetheless it is frightening turns the legs to jelly i ask you to what end dread it run from it destiny arrives all the same and now it is here or should i say i am inevitable",
-
-  "i thought by eliminating half of life the other half would thrive but you have shown me that is impossible as long as there are those who remember what was there will always be those unable to accept what can be they will resist",
-
-  "let us have a toast for the douchebags let us have a toast for the assholes let us have a toast for the scumbags every one of them that i know i always find something wrong you have been putting up with my stuff just way too long",
-
-  "i can do this all day you know i keep telling everybody they should move on and grow some do but not us not us if there is a small chance we owe this to everyone who is not in this room to try",
-
-  "you are not the only one cursed with knowledge all my life i dreamed of a day a moment when you would get what you deserved and i was always so disappointed but now you kill and torture and call it mercy",
-
   "now i am in it and i cannot get out and i feel like there is no way out people talk about real love now i am feeling like i am missing out i am trying to drown the pain but the liquor keep bringing it out",
-
-  "we are in the endgame now i saw fourteen million six hundred and five futures in only one of them do we win so whatever it takes we have to fight we owe it to the fallen",
 
   "bury me in the ocean with my ancestors that jumped from ships because they knew death was better than bondage just bury me do not cage me i lived free and i die free",
 
   "you know i had to do it for you i go for mine i got to shine throw your hands up in the sky i am gonna get on this tv mama i amma put you down",
 
   "i am just a kid from brooklyn whatever happens tomorrow you must promise me one thing that you will stay who you are not a perfect soldier but a good man",
+
+  "i keep showing up even when no one is watching even when the words do not come easy i keep going because something inside me knows that quitting is louder than failure and if i stop now i will never know how close i was to breaking through the noise and finding my real speed",
+
+  "i do not need luck i do not need help i have my focus my rhythm and these hands that do not miss when it matters so when the timer starts and the keys begin to fly just know that i came ready to win and i do not plan on slowing down for anyone",
+
+  "do not pray for an easy life pray for the strength to endure a difficult one do not pray for less problems pray for more wisdom do not pray for less challenges pray for more skills do not pray for less stress pray for more patience",
+
+  "the world gets quiet when i type like nothing else exists except the sound of keys and the thoughts in my head moving in sync every word feels like a breath and every line is a step forward i am not racing anyone i am just learning how to move with peace and purpose",
+
+  "this is not just typing this is training for something bigger this is focus under pressure control under chaos every second counts and every word matters you cannot fake flow and you cannot outrun the clock but if you show up with fire in your fingers you just might beat the game",
+
+  "i have always believed that success is not just about talent or luck it is about persistence resilience and the willingness to keep going even when the odds are against you every setback is an opportunity to learn every failure is a step closer to success",
+
+  "i have rehearsed this moment a thousand times but when the words get close my mind goes blank like i am afraid to say what is really in my heart i do not know how to start or even if it will make a difference but maybe if i type it out loud i will find the courage to speak",
 ];
 
 export const playgrounds = [
