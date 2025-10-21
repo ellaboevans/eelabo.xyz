@@ -105,13 +105,13 @@ export const techInhabitants = [
     duration: "Oct 2024 - Present",
     colors: "bg-amber-900/30 text-amber-500 border border-dashed border-amber-500/30",
     description:
-      "I contribute to several a multinational content-commerce platform by developing reusable UI components, ensuring SEO-ready performance, and implementing multi-language, multi-market features in collaboration with designers and backend teams",
+      "I contribute to several a multinational content-commerce platform by developing reusable UI components, ensuring SEO-ready performance, and implementing multi-language, multi-market features in collaboration with designers and backend teams.",
   },
   {
     name: "Slightly Techie",
     role: "Community Member",
     link: "https://slightlytechie.com/",
-    duration: "July 2023 - Present",
+    duration: "Jul 2023 - Present",
     colors: "bg-black-900/30 text-white border border-dashed border-black-500/30",
     description:
       "As a community member, I actively participate in discussions, share knowledge, and contribute to various projects and initiatives aimed at fostering a supportive environment for tech professionals.",
@@ -120,7 +120,7 @@ export const techInhabitants = [
     name: "GDSC, KNUST",
     role: "Core Team Member",
     link: "https://g.dev/eelabo",
-    duration: "Oct 2023 - June 2024",
+    duration: "Oct 2023 - Jun 2024",
     colors: "bg-blue-900/30 text-blue-500 border border-dashed border-blue-500/30",
     description:
       "We focused on empowering students with practical skills in web and mobile development, cloud computing, and other emerging technologies through hands-on learning experiences and community engagement.",
