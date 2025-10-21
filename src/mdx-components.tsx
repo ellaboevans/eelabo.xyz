@@ -1,6 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import ExternalLink from "@/components/external-link";
 import CopyToClipboard from "./components/copy-to-clipboard";
+import { Code } from "bright";
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
@@ -15,7 +16,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       if (isInline) {
         return (
           <span
-            className="font-mono text-sm bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 px-1 py-0.5 rounded"
+            className="font-mono text-sm bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-200 px-1 py-0.5 rounded"
             {...props}
           >
             {children}
@@ -23,22 +24,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         );
       }
       return (
-        <div
-          className={`font-mono flex items-start group relative text-sm ${className}`}
-          {...props}
-        >
-          <div>{children}</div>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute h-fit -top-1.5 right-0 duration-200">
+        <div className={`font-mono flex items-start group relative text-sm ${className}`}>
+          <Code
+            lang="angular-ts"
+            theme={"github-dark"}
+            className={`font-mono w-full ${className} !m-0`}
+            {...props}
+          >
+            {children}
+          </Code>
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute h-fit top-2.5 right-3 duration-200">
             <CopyToClipboard children={children} />
           </div>
         </div>
       );
     },
     pre: ({ children, ...props }) => (
-      <pre
-        className="font-mono text-sm bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 p-4 rounded-lg overflow-x-auto border border-stone-200 dark:border-stone-700 my-4"
-        {...props}
-      >
+      <pre className="w-full !p-0" {...props}>
         {children}
       </pre>
     ),
