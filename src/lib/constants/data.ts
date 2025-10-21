@@ -115,7 +115,7 @@ export const techInhabitants = [
       "As a community member, I actively participate in discussions, share knowledge, and contribute to various projects and initiatives aimed at fostering a supportive environment for tech professionals.",
   },
   {
-    name: "Google Developer Student Clubs",
+    name: "GDSC, KNUST",
     role: "Core Team Member",
     link: "https://g.dev/eelabo",
     duration: "Oct 2023 - June 2024",
