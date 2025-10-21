@@ -113,11 +113,11 @@ code {
 
 /* Ensure proper contrast in dark mode */
 .dark pre {
-  background-color: rgb(28 25 23);
+  /* background-color: rgb(28 25 23); */
   color: rgb(245 245 244);
 }
 
 .dark code {
-  background-color: rgb(41 37 36);
+  /* background-color: rgb(41 37 36); */
   color: rgb(245 245 244);
 }
