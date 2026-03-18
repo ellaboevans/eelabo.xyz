@@ -2,49 +2,15 @@ import { playgrounds } from "@/lib/constants/data";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { Metadata } from "next";
 import Link from "next/link";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "SmallWorld! - Collection of interactive projects",
+export const metadata: Metadata = createPageMetadata({
+  title: "SmallWorld",
   description:
-    "Collection of interactive projects. These are my own minimalistic versions of tools I use frequently",
-  openGraph: {
-    title: "SmallWorld! - Collection of interactive projects",
-    description:
-      "Collection of interactive projects. These are my own minimalistic versions of tools I use frequently",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/playground`,
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-    type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "SmallWorld! - Collection of interactive projects",
-    description:
-      "Collection of interactive projects. These are my own minimalistic versions of tools I use frequently",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 800,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 800,
-      },
-    ],
-  },
-};
+    "A collection of interactive projects and minimal tool replicas built for experimentation and learning.",
+  path: "/playground",
+  keywords: ["Interactive Projects", "Developer Tools", "Playground Apps", "Web Experiments"],
+});
 export default function Playground() {
   return (
     <div>

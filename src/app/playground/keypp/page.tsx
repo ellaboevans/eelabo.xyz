@@ -2,46 +2,14 @@ import Keypp from "./_components/keypp";
 import Back from "@/components/back";
 import { Metadata } from "next";
 import ExternalLink from "@/components/external-link";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Keypp",
-  description: "A minimal, interactive typing speed app",
-  openGraph: {
-    title: "Keypp",
-    description: "A minimal, interactive typing speed app",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/playground/keypp`,
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-    type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Keypp",
-    description: "A minimal, interactive typing speed app",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-  },
-};
+  description: "A minimal, interactive typing speed app.",
+  path: "/playground/keypp",
+  keywords: ["Typing Test", "Speed Typing", "Keyboard Practice"],
+});
 
 export default function KeyppPage() {
   return (

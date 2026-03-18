@@ -1,84 +1,140 @@
-import * as fs from "node:fs/promises";
-import * as path from "node:path";
 import Back from "@/components/back";
 import { format, formatDistanceToNow } from "date-fns";
-import { getContentMetadata } from "@/lib/utils/content-metadata";
+import { getAllContentMetadata, getContentMetadata } from "@/lib/utils/content-metadata";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { createArticleMetadata, createPageMetadata } from "@/lib/seo/metadata";
+import { getAbsoluteUrl, SITE_CONFIG } from "@/lib/seo/site";
+import JsonLd from "@/components/json-ld";
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
 
-  const { title, description, coverImage } = await getContentMetadata(slug);
+  try {
+    const { title, description, keywords, createdAt, updatedAt, author, published } =
+      await getContentMetadata(slug);
 
-  return {
-    title: `${title} | Evans`,
-    description,
-    openGraph: {
-      title: `${title} | Evans`,
+    if (!published) {
+      return createPageMetadata({
+        title: "Post unavailable",
+        description: "This post is currently unavailable.",
+        path: `/blog/${slug}`,
+        noIndex: true,
+      });
+    }
+
+    return createArticleMetadata({
+      title,
       description,
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`,
-      images: [
-        {
-          url: coverImage,
-          width: 1200,
-          height: 1000,
-        },
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-          width: 1200,
-          height: 1000,
-        },
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-          width: 1200,
-          height: 1000,
-        },
-      ],
-      type: "article",
-    },
-    twitter: {
-      title: `${title} | Evans`,
-      card: "summary_large_image",
-      description: `Read ${title} by Evans`,
-      images: [
-        {
-          url: coverImage,
-          width: 1200,
-          height: 1000,
-        },
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-          width: 1200,
-          height: 1000,
-        },
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-          width: 1200,
-          height: 1000,
-        },
-      ],
-    },
-  };
+      path: `/blog/${slug}`,
+      image: getAbsoluteUrl(`/blog/${slug}/opengraph-image`),
+      keywords,
+      publishedTime: createdAt.toISOString(),
+      modifiedTime: updatedAt.toISOString(),
+      authorName: author,
+    });
+  } catch {
+    return createPageMetadata({
+      title: "Post not found",
+      description: "The requested blog post could not be found.",
+      path: `/blog/${slug}`,
+      noIndex: true,
+    });
+  }
 }
-
-const __CONTENT_DIR = path.join(process.cwd(), "src", "contents");
 
 export async function generateStaticParams() {
-  const files = await fs.readdir(__CONTENT_DIR);
-  return files.map((file) => ({ slug: file.replace(".mdx", "") }));
+  const posts = await getAllContentMetadata({
+    published: true,
+    sortBy: "createdAt",
+    sortDirection: "desc",
+  });
+
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
-export default async function BlogPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPage({
+  params,
+}: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params;
 
-  const { title, readTime, createdAt, updatedAt, coverImage } = await getContentMetadata(slug);
+  let postMetadata;
+
+  try {
+    postMetadata = await getContentMetadata(slug);
+  } catch {
+    notFound();
+  }
+
+  if (!postMetadata.published) {
+    notFound();
+  }
+
+  const { title, description, keywords, author, readTime, createdAt, updatedAt, coverImage } =
+    postMetadata;
 
   const { default: Post } = await import(`@/contents/${slug}.mdx`);
+  const canonicalUrl = getAbsoluteUrl(`/blog/${slug}`);
+
+  const blogPostSchema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    image: [coverImage],
+    author: {
+      "@type": "Person",
+      name: author || SITE_CONFIG.authorName,
+      url: getAbsoluteUrl("/"),
+    },
+    publisher: {
+      "@type": "Person",
+      name: SITE_CONFIG.authorName,
+      url: getAbsoluteUrl("/"),
+    },
+    mainEntityOfPage: canonicalUrl,
+    url: canonicalUrl,
+    datePublished: createdAt.toISOString(),
+    dateModified: updatedAt.toISOString(),
+    keywords,
+    timeRequired: `PT${readTime}M`,
+  };
+
+  const breadcrumbSchema: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: getAbsoluteUrl("/"),
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: getAbsoluteUrl("/blog"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: canonicalUrl,
+      },
+    ],
+  };
 
   return (
     <BlogPostWrapper>
+      <JsonLd id={`blog-post-schema-${slug}`} data={[blogPostSchema, breadcrumbSchema]} />
       <ReadingProgressBar readTime={readTime} />
       <article
         className="w-full mt-10 prose max-w-none prose-headings:mt-6 prose-img:rounded-lg prose-img:w-full prose-headings:font-semibold prose-headings:text-stone-600 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg prose-h5:text-lg prose-h6:text-lg dark:prose-headings:text-white
@@ -100,7 +156,7 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
           </p>
         </div>
         {/* <div className="w-full outline mt-10 sm:max-h-96 overflow-hidden rounded-lg"> */}
-        <Image src={coverImage} alt={slug} width={500} height={500} className="h-full w-full" />
+        <Image src={coverImage} alt={title} width={500} height={500} className="h-full w-full" />
         {/* </div> */}
         <Post />
       </article>

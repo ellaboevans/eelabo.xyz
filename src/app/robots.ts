@@ -1,17 +1,15 @@
 import type { MetadataRoute } from "next";
+import { getAbsoluteUrl, getSiteUrl } from "@/lib/seo/site";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "Googlebot",
-        allow: ["/"],
-      },
-      {
-        userAgent: ["Applebot", "Bingbot"],
-        allow: ["/"],
+        userAgent: "*",
+        allow: "/",
       },
     ],
-    sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`,
+    sitemap: getAbsoluteUrl("/sitemap.xml"),
+    host: getSiteUrl(),
   };
 }

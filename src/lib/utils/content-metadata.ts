@@ -4,6 +4,19 @@ import matter from "gray-matter";
 
 const __CONTENT_DIR = path.join(process.cwd(), "src", "contents");
 
+function parseDateValue(value: unknown): Date | null {
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
 export type ContentMetadata = {
   title: string;
   description: string;
@@ -37,8 +50,11 @@ export async function getContentMetadata(slug: string): Promise<ContentMetadata>
 
     const { data: frontmatter, content } = matter(fileContent);
 
+    const createdAtFromFrontmatter = parseDateValue(frontmatter.createdAt);
+    const updatedAtFromFrontmatter = parseDateValue(frontmatter.updatedAt);
+
     // Remove code blocks for more accurate reading time
-    const text = content.replace(/```[\s\S]*?```/g, "");
+    const text = content.replaceAll(/```[\s\S]*?```/g, "");
     const words = text.split(/\s+/).filter(Boolean).length;
     const readTime = Math.max(1, Math.ceil(words / WPM));
 
@@ -58,9 +74,9 @@ export async function getContentMetadata(slug: string): Promise<ContentMetadata>
       ...frontmatter,
       description,
       readTime,
-      createdAt: new Date(stats.birthtime),
+      createdAt: createdAtFromFrontmatter ?? new Date(stats.birthtime),
       slug,
-      updatedAt: new Date(stats.mtime),
+      updatedAt: updatedAtFromFrontmatter ?? new Date(stats.mtime),
     } as ContentMetadata;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {

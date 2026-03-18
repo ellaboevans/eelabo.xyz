@@ -2,46 +2,14 @@ import Back from "@/components/back";
 import ExternalLink from "@/components/external-link";
 import PasswordGenerator from "./_components/password-generator";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Password Generator",
-  description: "A minimal, interactive password generator",
-  openGraph: {
-    title: "Password Generator",
-    description: "A minimal, interactive password generator",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/playground/password-generator`,
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-    type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Password Generator",
-    description: "A minimal, interactive password generator",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-  },
-};
+  description: "A minimal, interactive password generator.",
+  path: "/playground/password-generator",
+  keywords: ["Password Generator", "Security Tool", "Strong Password"],
+});
 
 export default function GeneratorPage() {
   return (

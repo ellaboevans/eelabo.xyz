@@ -2,46 +2,14 @@ import Back from "@/components/back";
 import Regfatto from "./_components/regfatto";
 import ExternalLink from "@/components/external-link";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Regfatto",
-  description: "A minimal, interactive typing speed app",
-  openGraph: {
-    title: "Regfatto",
-    description: "A minimal, interactive typing speed app",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/playground/regfatto`,
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-    type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Regfatto",
-    description: "A minimal, interactive typing speed app",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-  },
-};
+  description: "An interactive regex playground with readable expression explanations.",
+  path: "/playground/regfatto",
+  keywords: ["Regex Playground", "Regular Expressions", "Regex Learning Tool"],
+});
 export default function RegexPage() {
   return (
     <div className="mt-4">

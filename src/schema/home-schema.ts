@@ -1,4 +1,5 @@
 import { Person,  WebSite, WithContext } from "schema-dts";
+import { getAbsoluteUrl } from "@/lib/seo/site";
 
 export const homeSchema: WithContext<Person | WebSite> = {
   "@context": "https://schema.org",
@@ -8,9 +9,9 @@ export const homeSchema: WithContext<Person | WebSite> = {
   worksFor: {
     "@type": "Organization",
     name: "AmaliTech",
-    url: "https://www.amalitech.org",
+    url: "https://amalitech.com",
   },
-  url: process.env.NEXT_PUBLIC_BASE_URL,
+  url: getAbsoluteUrl("/"),
   sameAs: [
     "https://github.com/ellaboevans",
     "https://twitter.com/dev_concept",
@@ -21,6 +22,7 @@ export const homeSchema: WithContext<Person | WebSite> = {
   alumniOf: {
     "@type": "Organization",
     name: "Kwame Nkrumah University of Science and Technology",
+    url: "https://knust.edu.gh/",
   },
   knowsAbout: [
     "Angular",

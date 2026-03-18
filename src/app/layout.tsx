@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-// import localFont from "next/font/local";
 import { Geist_Mono, Sora, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar";
@@ -7,33 +6,10 @@ import ThemeProviderWithMeta from "../lib/provider";
 import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 import Circle from "@/components/circle";
-
-// const satoshi = localFont({
-//   src: [
-//     {
-//       path: "../../public/fonts/Satoshi-Regular.woff2",
-//       weight: "400",
-//       style: "normal",
-//     },
-//     {
-//       path: "../../public/fonts/Satoshi-Medium.woff2",
-//       weight: "500",
-//       style: "normal",
-//     },
-//     {
-//       path: "../../public/fonts/Satoshi-Bold.woff2",
-//       weight: "700",
-//       style: "normal",
-//     },
-//     {
-//       path: "../../public/fonts/Satoshi-Light.woff2",
-//       weight: "300",
-//       style: "normal",
-//     },
-//   ],
-//   variable: "--font-heading",
-//   display: "swap",
-// });
+import { getAbsoluteUrl, getSiteUrl, SITE_CONFIG } from "@/lib/seo/site";
+import JsonLd from "@/components/json-ld";
+import { siteSchema } from "@/schema/site-schema";
+import SmoothScroll from "@/components/smooth-scroll";
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
@@ -56,52 +32,62 @@ const openSans = Open_Sans({
   display: "swap",
 });
 
+const googleSiteVerification = process.env.GOOGLE_SITE_VERIFICATION;
+const bingSiteVerification = process.env.BING_SITE_VERIFICATION;
+
+const verification: NonNullable<Metadata["verification"]> = {
+  ...(googleSiteVerification ? { google: googleSiteVerification } : {}),
+  ...(bingSiteVerification ? { other: { "msvalidate.01": bingSiteVerification } } : {}),
+};
+
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
-    template: "%s | Evans",
-    default: "Evans",
+    template: `%s | ${SITE_CONFIG.shortName}`,
+    default: SITE_CONFIG.shortName,
   },
-  description:
-    "A Ghanaian software engineer with interest in user interfaces, backend development, open-source projects, and developer tools. Mostly writing software in TypeScript and Go.",
+  applicationName: SITE_CONFIG.siteName,
+  description: SITE_CONFIG.defaultDescription,
   keywords: ["Software Engineer", "Web Developer", "Open Source"],
-  authors: [{ name: "Evans Elabo" }],
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL as string),
+  authors: [{ name: SITE_CONFIG.authorName, url: getAbsoluteUrl("/") }],
+  creator: SITE_CONFIG.authorName,
+  publisher: SITE_CONFIG.authorName,
+  alternates: {
+    canonical: getAbsoluteUrl("/"),
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  verification,
+  referrer: "origin-when-cross-origin",
+  icons: {
+    icon: [{ url: "/favicon.ico" }],
+    shortcut: ["/favicon.ico"],
+    apple: [{ url: "/favicon.ico" }],
+  },
   openGraph: {
-    title: "Evans Elabo",
-    description:
-      "JavaScript is the truth | Software Engineer, highly skilled in user interfaces, backend development, open-source projects, and developer tools.",
-    url: process.env.NEXT_PUBLIC_BASE_URL,
-    siteName: "Evans Portfolio",
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.defaultDescription,
+    url: getAbsoluteUrl("/"),
+    siteName: SITE_CONFIG.siteName,
+    locale: SITE_CONFIG.locale,
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
+        url: getAbsoluteUrl("/opengraph-image"),
         width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
+        height: 630,
+        alt: SITE_CONFIG.siteName,
       },
     ],
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Evans Elabo",
-    description: "JavaScript is the truth | Software Engineer",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-2.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.defaultDescription,
+    creator: SITE_CONFIG.twitterHandle,
+    images: [getAbsoluteUrl("/opengraph-image")],
   },
 };
 
@@ -121,10 +107,12 @@ export default function RootLayout({
 }>) {
   const currentYear = new Date().getFullYear();
   return (
-    <html lang="en" suppressHydrationWarning className="scroll-smooth">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistMono.variable} ${geist.variable} ${openSans.variable} bg-(background:--background) text-(color:--foreground) dark:bg-(background:--background-dark) dark:text-(color:--foreground-dark) antialiased`}
       >
+        <SmoothScroll />
+        <JsonLd id="global-site-schema" data={siteSchema} />
         <div className="min-h-screen max-h-[150vh] w-full relative">
           <div
             className="absolute inset-0 z-0"

@@ -3,20 +3,29 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { projects, techInhabitants, tools } from "@/lib/constants/data";
 import ExternalLink from "@/components/external-link";
 import { homeSchema } from "@/schema/home-schema";
-import Head from "next/head";
+import JsonLd from "@/components/json-ld";
+import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Software Engineer Portfolio",
+  description:
+    "Portfolio of Evans Elabo, a Ghanaian software engineer focused on frontend architecture, backend systems, open-source projects, and developer tools.",
+  path: "/",
+  keywords: [
+    "Evans Elabo",
+    "Software Engineer",
+    "TypeScript Engineer",
+    "Frontend Engineer",
+    "Angular Developer",
+  ],
+});
 
 export default function Home() {
   const featuredProjects = projects.slice(0, 2);
   return (
     <div>
-      <Head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(homeSchema),
-          }}
-        />
-      </Head>
+      <JsonLd id="home-schema" data={homeSchema as unknown as Record<string, unknown>} />
       <div className="mt-8">
         <div>
           <span>
@@ -94,16 +103,16 @@ export default function Home() {
                     className={` w-4 h-4 opacity-0 group-hover:opacity-100  transition-all duration-300`}
                   />
                 </span>
-                <p className={` mb-3`}>{project.description}</p>
+                <p className={`mb-3`}>{project.description}</p>
               </Link>
             );
           })}
-          {/* <Link
-            href={"/https://github.com/ellaboevans?tab=repositories"}
+          <Link
+            href={"https://github.com/ellaboevans?tab=repositories"}
             className=" flex items-center gap-0 underline hover:gap-1 transition-all duration-300"
           >
             See archived projects <Icon className=" rotate-90" icon={"stash:arrow-up-light"} />
-          </Link> */}
+          </Link>
         </section>
       </section>
       <section className=" mt-10">
@@ -131,7 +140,7 @@ export default function Home() {
                   {tool.description.split(/(`[^`]+`)/g).map((part, index) =>
                     part.startsWith("`") && part.endsWith("`") ? (
                       <code
-                        key={index}
+                        key={index + 1}
                         className="bg-gray-800 !text-red-400 px-1 rounded text-sm font-mono"
                       >
                         {part.slice(1, -1)}

@@ -1,0 +1,14 @@
+type JsonLdProps = {
+  data: Record<string, unknown> | Array<Record<string, unknown>>;
+  id?: string;
+};
+
+export default function JsonLd({ data, id }: Readonly<JsonLdProps>) {
+  return (
+    <script
+      id={id}
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}

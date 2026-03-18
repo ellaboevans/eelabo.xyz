@@ -1,39 +1,18 @@
 import { getAllContentMetadata } from "@/lib/utils/content-metadata";
 import BlogView from "./_components/shared-layout";
 import { Metadata } from "next";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import JsonLd from "@/components/json-ld";
+import { getAbsoluteUrl, SITE_CONFIG } from "@/lib/seo/site";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Blog",
-  description: "Blog posts by Evans",
-  openGraph: {
-    title: "Evans",
-    description:
-      "I share my thoughts, projects and discoveries in web dev technologies and software engineering",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog`,
-    siteName: "Evans Portfolio",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-    type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Evans | Blog",
-    description: "Small God - Blog posts by Evans on web dev technologies and software engineering",
-    creator: "@dev_concept",
-    images: [
-      {
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/og-1.png`,
-        width: 1200,
-        height: 1000,
-      },
-    ],
-  },
-};
+  description:
+    "Thoughts, project notes, and practical discoveries across web technologies and software engineering.",
+  path: "/blog",
+  image: getAbsoluteUrl("/blog/opengraph-image"),
+  keywords: ["Software Engineering Blog", "Web Development", "Next.js", "Angular", "TypeScript"],
+});
 
 export default async function Blog() {
   try {
@@ -42,8 +21,37 @@ export default async function Blog() {
       sortBy: "createdAt",
       sortDirection: "desc",
     });
+
+    const blogSchema: Record<string, unknown> = {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      name: `${SITE_CONFIG.authorName} Blog`,
+      description:
+        "Thoughts, project notes, and practical discoveries across web technologies and software engineering.",
+      url: getAbsoluteUrl("/blog"),
+      author: {
+        "@type": "Person",
+        name: SITE_CONFIG.authorName,
+        url: getAbsoluteUrl("/"),
+      },
+      blogPost: posts.map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        description: post.description,
+        datePublished: post.createdAt.toISOString(),
+        dateModified: post.updatedAt.toISOString(),
+        url: getAbsoluteUrl(`/blog/${post.slug}`),
+        image: post.coverImage,
+        author: {
+          "@type": "Person",
+          name: post.author || SITE_CONFIG.authorName,
+        },
+      })),
+    };
+
     return (
       <div className="">
+        <JsonLd id="blog-list-schema" data={blogSchema} />
         <div>
           <h1 className="text-4xl  pb-1 font-bold mt-8">Philosophy</h1>
         </div>
