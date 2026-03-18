@@ -31,6 +31,7 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
   try {
     const post = await getContentMetadata(slug);
     if (post.published) {
+      console.log(`Generating Open Graph image for post:`, post);
       title = post.title;
       description = post.description;
     }
@@ -40,6 +41,8 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
 
   const headline = truncate(title, 78);
   const summary = truncate(description, 170);
+  console.log(`Open Graph image headline: "${headline}"`);
+  console.log(`Open Graph image summary: "${summary}"`);
   const host = new URL(getSiteUrl()).host;
 
   return new ImageResponse(
@@ -63,8 +66,7 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
           border: "1px solid #e5e7eb",
           borderRadius: 20,
           padding: "42px 46px",
-          background:
-            "radial-gradient(circle, #051937 0%, #004d7a 35%, #008793 68%, #00bf72 85%, #a8eb12 100%);",
+          background: "linear-gradient(15deg, #0f2027 0%, #203a43 45%, #2c5364 70%, #f05f57 100%)",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -106,7 +108,6 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
             </span>
           </div>
         </div>
-
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div
             style={{
@@ -127,7 +128,6 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
             {summary}
           </div>
         </div>
-
         <div
           style={{
             fontSize: 22,
