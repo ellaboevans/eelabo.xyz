@@ -10,7 +10,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "Software Engineer - Evans Elabo",
   description:
-    "Portfolio of Evans Elabo, a Ghanaian software engineer focused on frontend architecture, backend systems, open-source projects, and developer tools.",
+    "I am a Ghanaian software engineer focused on frontend architecture, backend systems, open-source projects, and developer tools.",
   path: "/",
   keywords: [
     "Evans Elabo",
