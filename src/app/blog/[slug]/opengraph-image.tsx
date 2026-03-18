@@ -41,66 +41,69 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
   const host = new URL(getSiteUrl()).host;
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        background: "#ffffff",
+        color: "#111827",
+        padding: "36px",
+      }}
+    >
       <div
         style={{
-          width: "100%",
-          height: "100%",
           display: "flex",
-          position: "relative",
-          background: "#090f23",
-          color: "#f8fafc",
-          padding: "54px 70px",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          width: "100%",
+          border: "1px solid #e5e7eb",
+          borderRadius: 20,
+          padding: "42px 46px",
+          background: "linear-gradient(160deg, #ffffff 0%, #fcfcfd 100%)",
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(85% 90% at 18% 0%, rgba(59, 130, 246, 0.32), rgba(9, 15, 35, 0) 62%), radial-gradient(80% 100% at 100% 100%, rgba(245, 158, 11, 0.24), rgba(9, 15, 35, 0) 70%)",
-          }}
-        />
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 24, fontWeight: 600, color: "#6b7280" }}>Article</span>
+          <span style={{ fontSize: 22, color: "#9ca3af" }}>{host}</span>
+        </div>
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 1,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            width: "100%",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span style={{ fontSize: 28, fontWeight: 700, color: "#fbbf24" }}>From the blog</span>
-            <span style={{ fontSize: 24, color: "#cbd5e1" }}>{host}</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div
+            style={{
+              fontSize: 68,
+              lineHeight: 1.06,
+              letterSpacing: -1,
+              fontWeight: 850,
+              maxWidth: 1060,
+            }}
+          >
+            {truncate(title, 90)}
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-            <div
-              style={{
-                fontSize: 72,
-                lineHeight: 1.08,
-                letterSpacing: -1,
-                fontWeight: 850,
-                maxWidth: 1060,
-              }}
-            >
-              {truncate(title, 90)}
-            </div>
-
-            <div style={{ fontSize: 31, lineHeight: 1.28, color: "#e2e8f0", maxWidth: 1020 }}>
-              {truncate(description, 165)}
-            </div>
-          </div>
-
-          <div style={{ fontSize: 24, color: "#cbd5e1", display: "flex", alignItems: "center" }}>
-            {host}/blog/{slug}
+          <div style={{ fontSize: 29, lineHeight: 1.3, color: "#4b5563", maxWidth: 1020 }}>
+            {truncate(description, 165)}
           </div>
         </div>
+
+        <div
+          style={{
+            fontSize: 22,
+            color: "#6b7280",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderTop: "1px solid #e5e7eb",
+            paddingTop: 18,
+          }}
+        >
+          <span>
+            {host}/blog/{slug}
+          </span>
+          <span style={{ color: "#111827", fontWeight: 600 }}>{SITE_CONFIG.authorName}</span>
+        </div>
       </div>
-    ),
+    </div>,
     {
       ...size,
     }
