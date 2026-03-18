@@ -6,9 +6,22 @@ import ReadingProgressBar from "../_components/reading-progress-bar";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { createArticleMetadata, createPageMetadata } from "@/lib/seo/metadata";
-import { getAbsoluteUrl, SITE_CONFIG } from "@/lib/seo/site";
+import { getAbsoluteUrl, getSiteUrl, SITE_CONFIG } from "@/lib/seo/site";
 import JsonLd from "@/components/json-ld";
+
+async function getRequestOrigin(): Promise<string> {
+  const headerStore = await headers();
+  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
+  const protocol = headerStore.get("x-forwarded-proto") ?? "https";
+
+  if (!host) {
+    return getSiteUrl();
+  }
+
+  return `${protocol}://${host}`;
+}
 
 export async function generateMetadata({
   params,
@@ -16,7 +29,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const ogTemplateVersion = "20260318";
+  const ogTemplateVersion = "20260318-2";
+  const requestOrigin = await getRequestOrigin();
 
   try {
     const { title, description, keywords, createdAt, updatedAt, author, published } =
@@ -35,9 +49,10 @@ export async function generateMetadata({
       title,
       description,
       path: `/blog/${slug}`,
-      image: getAbsoluteUrl(
-        `/blog/${slug}/opengraph-image?v=${updatedAt.getTime()}-${ogTemplateVersion}`
-      ),
+      image: new URL(
+        `/blog/${slug}/opengraph-image?v=${updatedAt.getTime()}-${ogTemplateVersion}`,
+        `${requestOrigin}/`
+      ).toString(),
       keywords,
       publishedTime: createdAt.toISOString(),
       modifiedTime: updatedAt.toISOString(),
