@@ -38,6 +38,8 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
     // Keep fallback values when metadata is unavailable.
   }
 
+  const headline = truncate(title, 78);
+  const summary = truncate(description, 170);
   const host = new URL(getSiteUrl()).host;
 
   return new ImageResponse(
@@ -47,7 +49,7 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
         height: "100%",
         display: "flex",
         background: "#ffffff",
-        color: "#111827",
+        color: "#ffffff",
         padding: "36px",
       }}
     >
@@ -57,39 +59,79 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
           flexDirection: "column",
           justifyContent: "space-between",
           width: "100%",
+          height: "100%",
           border: "1px solid #e5e7eb",
           borderRadius: 20,
           padding: "42px 46px",
-          background: "linear-gradient(160deg, #ffffff 0%, #fcfcfd 100%)",
+          background:
+            "radial-gradient(circle, #051937 0%, #004d7a 35%, #008793 68%, #00bf72 85%, #a8eb12 100%);",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontSize: 24, fontWeight: 600, color: "#6b7280" }}>Article</span>
-          <span style={{ fontSize: 22, color: "#9ca3af" }}>{host}</span>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+              gap: 12,
+            }}
+          >
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+              }}
+            >
+              <span
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 999,
+                  background: "#e5e7eb",
+                  display: "flex",
+                }}
+              />
+              <span
+                style={{
+                  fontSize: 24,
+                  fontWeight: 600,
+                  color: "#e5e7eb",
+                  letterSpacing: 0.3,
+                }}
+              >
+                Article
+              </span>
+            </span>
+          </div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div
             style={{
-              fontSize: 68,
-              lineHeight: 1.06,
-              letterSpacing: -1,
-              fontWeight: 850,
+              fontSize: 52,
+              lineHeight: 1.02,
+              fontWeight: 800,
+              letterSpacing: -1.2,
+              display: "flex",
+              flexDirection: "column",
               maxWidth: 1060,
+              marginBottom: 14,
             }}
           >
-            {truncate(title, 90)}
+            {headline}
           </div>
 
-          <div style={{ fontSize: 29, lineHeight: 1.3, color: "#4b5563", maxWidth: 1020 }}>
-            {truncate(description, 165)}
+          <div style={{ fontSize: 30, color: "#e5e7eb", lineHeight: 1.32, maxWidth: 1020 }}>
+            {summary}
           </div>
         </div>
 
         <div
           style={{
             fontSize: 22,
-            color: "#6b7280",
+            color: "#e5e7eb",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -100,7 +142,9 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
           <span>
             {host}/blog/{slug}
           </span>
-          <span style={{ color: "#111827", fontWeight: 600 }}>{SITE_CONFIG.authorName}</span>
+          <span style={{ color: "#e5e7eb", fontWeight: 800, fontSize: 14, letterSpacing: 0.3 }}>
+            MADE • IN • GHANA • SOFTWARE • ENGINEER
+          </span>
         </div>
       </div>
     </div>,

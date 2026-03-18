@@ -10,7 +10,6 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Thoughts, project notes, and practical discoveries across web technologies and software engineering.",
   path: "/blog",
-  image: getAbsoluteUrl("/blog/opengraph-image"),
   keywords: ["Software Engineering Blog", "Web Development", "Next.js", "Angular", "TypeScript"],
 });
 

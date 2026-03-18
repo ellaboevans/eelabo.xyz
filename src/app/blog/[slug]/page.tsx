@@ -16,6 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
+  const ogTemplateVersion = "20260318";
 
   try {
     const { title, description, keywords, createdAt, updatedAt, author, published } =
@@ -34,7 +35,9 @@ export async function generateMetadata({
       title,
       description,
       path: `/blog/${slug}`,
-      image: getAbsoluteUrl(`/blog/${slug}/opengraph-image`),
+      image: getAbsoluteUrl(
+        `/blog/${slug}/opengraph-image?v=${updatedAt.getTime()}-${ogTemplateVersion}`
+      ),
       keywords,
       publishedTime: createdAt.toISOString(),
       modifiedTime: updatedAt.toISOString(),
