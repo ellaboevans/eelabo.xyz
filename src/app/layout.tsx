@@ -3,13 +3,13 @@ import { Geist_Mono, Sora, Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/navbar";
 import ThemeProviderWithMeta from "../lib/provider";
-import { Analytics } from "@vercel/analytics/react";
 import Link from "next/link";
 import Circle from "@/components/circle";
 import { getAbsoluteUrl, getSiteUrl, SITE_CONFIG } from "@/lib/seo/site";
 import JsonLd from "@/components/json-ld";
 import { siteSchema } from "@/schema/site-schema";
 import SmoothScroll from "@/components/smooth-scroll";
+import { Analytics } from "@vercel/analytics/next";
 
 const geistMono = Geist_Mono({
   subsets: ["latin"],
