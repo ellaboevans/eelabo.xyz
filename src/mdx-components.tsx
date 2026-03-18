@@ -34,7 +34,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
             {children}
           </Code>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute h-fit top-2.5 right-3 duration-200">
-            <CopyToClipboard children={children} />
+            <CopyToClipboard>{children}</CopyToClipboard>
           </div>
         </div>
       );
