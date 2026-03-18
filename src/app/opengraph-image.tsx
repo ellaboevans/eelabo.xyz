@@ -19,7 +19,7 @@ export default function OpenGraphImage() {
         width: "100%",
         display: "flex",
         background: "#ffffff",
-        color: "#111827",
+        color: "#ffffff",
         padding: "36px",
       }}
     >
@@ -33,7 +33,8 @@ export default function OpenGraphImage() {
           border: "1px solid #e5e7eb",
           borderRadius: 20,
           padding: "42px 46px",
-          background: "linear-gradient(160deg, #ffffff 0%, #fcfcfd 100%)",
+          background:
+            "radial-gradient(circle, #051937 0%, #004d7a 35%, #008793 68%, #00bf72 85%, #a8eb12 100%);",
         }}
       >
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -46,10 +47,10 @@ export default function OpenGraphImage() {
           >
             <span
               style={{
-                width: 10,
-                height: 10,
+                width: 20,
+                height: 20,
                 borderRadius: 999,
-                background: "#d97706",
+                background: "#e5e7eb",
                 display: "flex",
               }}
             />
@@ -57,14 +58,13 @@ export default function OpenGraphImage() {
               style={{
                 fontSize: 24,
                 fontWeight: 600,
-                color: "#6b7280",
+                color: "#e5e7eb",
                 letterSpacing: 0.3,
               }}
             >
               {SITE_CONFIG.authorName}
             </span>
           </div>
-          <span style={{ fontSize: 22, color: "#9ca3af" }}>Portfolio</span>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 16, maxWidth: 1000 }}>
@@ -76,14 +76,15 @@ export default function OpenGraphImage() {
               letterSpacing: -1.2,
               display: "flex",
               flexDirection: "column",
+              marginBottom: 14,
             }}
           >
             Software Engineer
             <br />
             Building Thoughtful Products
           </div>
-          <div style={{ fontSize: 30, color: "#4b5563", lineHeight: 1.32 }}>
-            Writing code is always the last thing I do. We think through problems, design solutions,
+          <div style={{ fontSize: 30, color: "#e5e7eb", lineHeight: 1.32 }}>
+            Writing code is always the last thing I do. I think through problems, design solutions,
             and build consensus before writing a single line of code.
           </div>
         </div>
@@ -94,13 +95,16 @@ export default function OpenGraphImage() {
             justifyContent: "space-between",
             alignItems: "center",
             fontSize: 22,
-            color: "#6b7280",
+            color: "#e5e7eb",
             borderTop: "1px solid #e5e7eb",
             paddingTop: 18,
           }}
         >
           <span>{host}</span>
-          <span style={{ color: "#111827", fontWeight: 600 }}>{SITE_CONFIG.siteName}</span>
+          <span style={{ color: "#e5e7eb", fontWeight: 800, fontSize: 14, letterSpacing: 0.3 }}>
+            {" "}
+            MADE • IN • GHANA • SOFTWARE • ENGINEER
+          </span>
         </div>
       </div>
     </div>,
