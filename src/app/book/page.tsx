@@ -4,7 +4,7 @@ import Back from "@/components/back";
 import CalEmbed from "./_components/cal-embed";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Book a Consultation",
+  title: "Wanna Talk? Book a Free Consultation with Evans Elabo",
   description:
     "Schedule a free consultation to discuss your software development project, technical architecture, or web application needs.",
   path: "/book",
