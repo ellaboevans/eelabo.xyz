@@ -54,8 +54,11 @@ export default function Home() {
       </div>
       <div className="mt-6">
         I'm always open to new opportunities and collaborations. Feel free to explore my portfolio
-        and <ExternalLink href={"mailto:ellaboevans@gmail.com"}>reach out</ExternalLink> if you'd
-        like to work together on your next project.
+        and{" "}
+        <ExternalLink target="_self" href={"/book"}>
+          reach out
+        </ExternalLink>{" "}
+        if you'd like to work together on your next project.
       </div>
       <section className="flex gap-4 py-6  text-black dark:text-stone-300 items-center">
         <a

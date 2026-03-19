@@ -2,7 +2,7 @@ import { ContentMetadata } from "@/lib/utils/content-metadata";
 import Link from "next/link";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-export default function BlogList({ posts }: { posts: ContentMetadata[] }) {
+export default function BlogList({ posts }: Readonly<{ posts: ContentMetadata[] }>) {
   return (
     <ul className=" flex flex-col gap-4 mt-6 w-full">
       {posts.map((post) => (

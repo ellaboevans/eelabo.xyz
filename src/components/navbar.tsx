@@ -15,6 +15,10 @@ const routes = [
     label: "Playground",
     path: "/playground",
   },
+  {
+    label: "Book",
+    path: "/book",
+  },
 ];
 
 function Navbar() {
