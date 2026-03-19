@@ -3,6 +3,7 @@ import { getContentMetadata } from "@/lib/utils/content-metadata";
 import { SITE_CONFIG, getSiteUrl } from "@/lib/seo/site";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 export const alt = "Blog post preview";
 export const size = {
   width: 1200,
@@ -31,7 +32,6 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
   try {
     const post = await getContentMetadata(slug);
     if (post.published) {
-      console.log(`Generating Open Graph image for post:`, post);
       title = post.title;
       description = post.description;
     }
@@ -41,8 +41,6 @@ export default async function BlogPostOpenGraphImage({ params }: OpenGraphImageP
 
   const headline = truncate(title, 78);
   const summary = truncate(description, 170);
-  console.log(`Open Graph image headline: "${headline}"`);
-  console.log(`Open Graph image summary: "${summary}"`);
   const host = new URL(getSiteUrl()).host;
 
   return new ImageResponse(

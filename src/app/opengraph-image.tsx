@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { SITE_CONFIG, getSiteUrl } from "@/lib/seo/site";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 export const alt = `${SITE_CONFIG.siteName} preview`;
 export const size = {
   width: 1200,

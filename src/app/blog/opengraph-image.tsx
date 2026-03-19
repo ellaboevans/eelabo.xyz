@@ -1,6 +1,7 @@
 import OpenGraphImage from "../opengraph-image";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 export const alt = "Blog preview";
 export const size = {
   width: 1200,

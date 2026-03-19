@@ -8,19 +8,15 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import { createArticleMetadata, createPageMetadata } from "@/lib/seo/metadata";
-import { getAbsoluteUrl, getSiteUrl, SITE_CONFIG } from "@/lib/seo/site";
+import { getAbsoluteUrl, getCanonicalOriginFromRequest, SITE_CONFIG } from "@/lib/seo/site";
 import JsonLd from "@/components/json-ld";
 
 async function getRequestOrigin(): Promise<string> {
   const headerStore = await headers();
-  const host = headerStore.get("x-forwarded-host") ?? headerStore.get("host");
-  const protocol = headerStore.get("x-forwarded-proto") ?? "https";
-
-  if (!host) {
-    return getSiteUrl();
-  }
-
-  return `${protocol}://${host}`;
+  return getCanonicalOriginFromRequest(
+    headerStore.get("x-forwarded-host") ?? headerStore.get("host"),
+    headerStore.get("x-forwarded-proto")
+  );
 }
 
 export async function generateMetadata({
@@ -29,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const ogTemplateVersion = "20260318-2";
+  const ogTemplateVersion = "20260319-1";
   const requestOrigin = await getRequestOrigin();
 
   try {
