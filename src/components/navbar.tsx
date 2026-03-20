@@ -206,7 +206,7 @@ function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
-              className="fixed inset-y-0 left-0 z-50 w-3/4 max-w-xs flex flex-col bg-white/90 dark:bg-neutral-800/95 backdrop-blur-xs border-r border-stone-200 dark:border-stone-800 sm:hidden"
+              className="fixed inset-y-0 left-0 z-50 w-3/4 max-w-xs flex flex-col bg-white/90 dark:bg-[#171717]/80 backdrop-blur-xs border-r border-stone-200 dark:border-stone-800 sm:hidden"
               variants={menuVariants}
               initial="closed"
               animate="open"
