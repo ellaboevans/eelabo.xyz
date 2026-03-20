@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { Icon } from "@iconify/react";
 import { usePathname } from "next/navigation";
 import DigitalClock from "@/components/clock";
 import { useTheme } from "next-themes";
