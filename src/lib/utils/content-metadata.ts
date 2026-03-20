@@ -26,6 +26,7 @@ export type ContentMetadata = {
   createdAt: Date;
   updatedAt: Date;
   coverImage: string;
+  ogImage?: string; // overrides coverImage for OG if provided
   published: boolean;
   slug: string;
 };

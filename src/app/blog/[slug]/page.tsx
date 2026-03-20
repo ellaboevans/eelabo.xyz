@@ -1,68 +1,18 @@
 import Back from "@/components/back";
 import { format, formatDistanceToNow } from "date-fns";
-import { getAllContentMetadata, getContentMetadata } from "@/lib/utils/content-metadata";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
-import { createArticleMetadata, createPageMetadata } from "@/lib/seo/metadata";
-import { getAbsoluteUrl, getCanonicalOriginFromRequest, SITE_CONFIG } from "@/lib/seo/site";
+import { getAbsoluteUrl, SITE_CONFIG } from "@/lib/seo/site";
 import JsonLd from "@/components/json-ld";
+import { getAllContentMetadata, getContentMetadata } from "@/lib/utils/content-metadata";
 
-async function getRequestOrigin(): Promise<string> {
-  const headerStore = await headers();
-  return getCanonicalOriginFromRequest(
-    headerStore.get("x-forwarded-host") ?? headerStore.get("host"),
-    headerStore.get("x-forwarded-proto")
-  );
-}
 
-export async function generateMetadata({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const ogTemplateVersion = "20260319-1";
-  const requestOrigin = await getRequestOrigin();
-
-  try {
-    const { title, description, keywords, createdAt, updatedAt, author, published } =
-      await getContentMetadata(slug);
-
-    if (!published) {
-      return createPageMetadata({
-        title: "Post unavailable",
-        description: "This post is currently unavailable.",
-        path: `/blog/${slug}`,
-        noIndex: true,
-      });
-    }
-
-    return createArticleMetadata({
-      title,
-      description,
-      path: `/blog/${slug}`,
-      image: new URL(
-        `/blog/${slug}/opengraph-image?v=${updatedAt.getTime()}-${ogTemplateVersion}`,
-        `${requestOrigin}/`
-      ).toString(),
-      keywords,
-      publishedTime: createdAt.toISOString(),
-      modifiedTime: updatedAt.toISOString(),
-      authorName: author,
-    });
-  } catch {
-    return createPageMetadata({
-      title: "Post not found",
-      description: "The requested blog post could not be found.",
-      path: `/blog/${slug}`,
-      noIndex: true,
-    });
-  }
-}
+};
 
 export async function generateStaticParams() {
   const posts = await getAllContentMetadata({
@@ -74,18 +24,69 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const post = await getContentMetadata(slug);
+
+  if (!post) return {}; // notFound() is handled in the page below
+
+  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const image = post.coverImage
+    ? `${post.coverImage}`
+    : `${siteUrl}/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(
+        post.description
+      )}`;
+  const ogImageUrl = post.ogImage ? `${siteUrl}${post.ogImage}` : image;
+
+  console.log("Generating metadata for:", slug);
+  console.log("Canonical URL:", canonicalUrl);
+  console.log("OG Image URL:", ogImageUrl);
+
+  return {
+    title: post.title,
+    description: post.description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      type: "article",
+      url: canonicalUrl,
+      title: post.title,
+      description: post.description,
+      publishedTime: new Date(post.createdAt).toISOString(),
+      authors: post.author ? [post.author] : undefined,
+      tags: post.keywords,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [ogImageUrl],
+    },
+  };
+}
+ 
+
+
+
 export default async function BlogPage({
   params,
 }: Readonly<{ params: Promise<{ slug: string }> }>) {
   const { slug } = await params;
 
-  let postMetadata;
-
-  try {
-    postMetadata = await getContentMetadata(slug);
-  } catch {
-    notFound();
-  }
+  let postMetadata = await getContentMetadata(slug);
 
   if (!postMetadata.published) {
     notFound();
