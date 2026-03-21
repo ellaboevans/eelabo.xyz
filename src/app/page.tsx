@@ -66,6 +66,7 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           className="  opacity-60 hover:opacity-100 transition-all duration-300"
+          aria-label="GitHub"
         >
           <Icon icon={"line-md:github-loop"} className=" w-6 h-6" />
         </a>
@@ -74,9 +75,19 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
           className=" opacity-60 hover:opacity-100 transition-all duration-300"
+          aria-label="Twitter"
         >
           <Icon icon={"line-md:twitter-x"} className=" w-6 h-6" />
         </a>
+        {/* <a
+          href="/resume.pdf"
+          download
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300"
+          aria-label="Download Resume"
+        >
+          <Icon icon={"ph:file-arrow-down"} className="w-4 h-4" />
+          Resume
+        </a> */}
 
         <div className="w-full relative my-2">
           <hr className="w-full border-stone-200 dark:border-stone-700" />
