@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   publisher: SITE_CONFIG.authorName,
   alternates: {
     canonical: getAbsoluteUrl("/"),
+    types: {
+      "application/rss+xml": getAbsoluteUrl("/feed.xml"),
+    },
   },
   robots: {
     index: true,
