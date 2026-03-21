@@ -5,16 +5,25 @@ import matter from "gray-matter";
 const __CONTENT_DIR = path.join(process.cwd(), "src", "contents");
 
 function parseDateValue(value: unknown): Date | null {
-  if (value instanceof Date) {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
     return value;
   }
 
-  if (typeof value !== "string") {
-    return null;
+  if (typeof value === "string") {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed;
+    }
   }
 
-  const parsed = new Date(value);
-  return Number.isNaN(parsed.getTime()) ? null : parsed;
+  if (typeof value === "number") {
+    const parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed;
+    }
+  }
+
+  return null;
 }
 
 export type ContentMetadata = {
@@ -75,9 +84,23 @@ export async function getContentMetadata(slug: string): Promise<ContentMetadata>
       ...frontmatter,
       description,
       readTime,
-      createdAt: createdAtFromFrontmatter ?? new Date(stats.birthtime),
+      createdAt:
+        createdAtFromFrontmatter ??
+        (() => {
+          console.warn(
+            `[content] "${slug}" missing createdAt in frontmatter, using file birthtime (unreliable in CI)`
+          );
+          return new Date(stats.birthtime);
+        })(),
       slug,
-      updatedAt: updatedAtFromFrontmatter ?? new Date(stats.mtime),
+      updatedAt:
+        updatedAtFromFrontmatter ??
+        (() => {
+          console.warn(
+            `[content] "${slug}" missing updatedAt in frontmatter, using file mtime (unreliable in CI)`
+          );
+          return new Date(stats.mtime);
+        })(),
     } as ContentMetadata;
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
