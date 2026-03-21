@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https" as const,
         hostname: "ik.imagekit.io",
       },
+      {
+        protocol: "https" as const,
+        hostname: "images.unsplash.com",
+      },
     ],
   },
   eslint: {
