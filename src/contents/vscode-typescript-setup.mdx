@@ -1,0 +1,291 @@
+---
+title: "My VS Code Setup for TypeScript Development in 2026"
+description: "A curated VS Code setup optimized for TypeScript, Angular, and Next.js development. Extensions, settings, keybindings, and workflows that make coding feel effortless."
+keywords: ["VS Code", "TypeScript", "Developer Setup", "Productivity", "Extensions", "Angular", "Next.js", "Developer Tools"]
+author: "Evans Elabo"
+published: true
+coverImage: "https://images.unsplash.com/photo-1770339030301-3c86fe2854de?q=80&w=2832&auto=format&fit=crop"
+createdAt: "2026-01-10T10:00:00.000Z"
+updatedAt: "2026-03-01T09:00:00.000Z"
+---
+
+People always ask what tools I use. Here's my complete VS Code setup for TypeScript development, the extensions, settings, and workflows that help me ship code faster without burning out.
+
+This isn't about having the *most* tools. It's about having the *right* tools, configured to stay out of your way until you need them.
+
+## The Philosophy
+
+Three principles guide my setup:
+
+1. **Automate the obvious**: Formatting, imports, and linting should happen without thinking
+2. **Surface the important**: Errors, types, and git status should be visible at a glance
+3. **Stay fast**: Every millisecond of lag compounds into frustration
+
+With that in mind, let's dive in.
+
+## Essential Extensions
+
+### Code Quality
+
+**ESLint**: The foundation of code quality. Combined with TypeScript's compiler, this catches 90% of issues before they become bugs.
+
+```json
+// Recommended settings
+{
+  "eslint.validate": ["typescript", "typescriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
+```
+
+**Prettier**: Formatting wars are over. Let the robot decide, and never think about tabs vs spaces again.
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "es5"
+}
+```
+
+**Error Lens**: Displays errors and warnings inline, right next to the problematic code. No more squinting at the bottom panel.
+
+### TypeScript Superpowers
+
+**Pretty TypeScript Errors**: Transforms TypeScript's notoriously cryptic error messages into readable, formatted output. Game changer for complex generic types.
+
+**TypeScript Importer** : Automatically adds imports when you use a symbol that isn't imported. Saves countless keystrokes.
+
+**Move TS**: When you rename or move a file, this updates all imports across your project. Essential for refactoring.
+
+### Framework-Specific
+
+**Angular Language Service**: If you're writing Angular, this is non-negotiable. Gives you autocomplete, error checking, and navigation in templates.
+
+**ES7+ React/Redux/React-Native snippets**: Quick scaffolding for React components and hooks.
+
+**Tailwind CSS IntelliSense**: Autocomplete for Tailwind classes, with color previews and documentation on hover.
+
+### Git & Collaboration
+
+**GitLens**: See who wrote each line, when, and why. Invaluable for understanding legacy code or tracking down when a bug was introduced.
+
+```json
+{
+  "gitlens.currentLine.enabled": true,
+  "gitlens.hovers.currentLine.over": "line"
+}
+```
+
+**GitHub Copilot**: AI pair programming. Controversial, maybe, but it's genuinely useful for boilerplate, tests, and documentation.
+
+### Quality of Life
+
+**Auto Rename Tag**: Rename an HTML/JSX opening tag, and the closing tag updates automatically.
+
+**Bracket Pair Colorizer** (now built-in): Different colors for nested brackets. Makes complex expressions parseable at a glance.
+
+**Path Intellisense**: Autocomplete for file paths in imports. Never type `../../../` and get it wrong again.
+
+**Code Spell Checker**: Catches typos in variable names, comments, and strings. Embarrassment prevention.
+
+## Settings I Can't Live Without
+
+Here's my complete `settings.json`, with explanations:
+
+```json
+{
+  // Editor basics
+  "editor.fontSize": 14,
+  "editor.fontFamily": "JetBrains Mono, Fira Code, monospace",
+  "editor.fontLigatures": true,
+  "editor.lineHeight": 1.6,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+
+  // Minimap is noise:I use Cmd+G to jump
+  "editor.minimap.enabled": false,
+
+  // Show inlay hints for types (huge for understanding code)
+  "editor.inlayHints.enabled": "onUnlessPressed",
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+
+  // Auto-save after 1 second of inactivity
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+
+  // Format and fix on save
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  // TypeScript imports
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  // Terminal
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.fontFamily": "JetBrains Mono",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+
+  // File explorer
+  "explorer.confirmDelete": false,
+  "explorer.confirmDragAndDrop": false,
+  "workbench.tree.indent": 16,
+
+  // Breadcrumbs help navigation in large files
+  "breadcrumbs.enabled": true,
+
+  // Search exclusions (faster search)
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.next": true,
+    "**/coverage": true
+  }
+}
+```
+
+## Custom Keybindings
+
+Speed comes from muscle memory. These are the keybindings I've internalized:
+
+```json
+// keybindings.json
+[
+  // Quick file switching
+  { "key": "cmd+p", "command": "workbench.action.quickOpen" },
+
+  // Toggle terminal (I use this constantly)
+  { "key": "cmd+`", "command": "workbench.action.terminal.toggleTerminal" },
+
+  // Go to definition (core navigation)
+  { "key": "cmd+click", "command": "editor.action.revealDefinition" },
+
+  // Peek definition (stay in context)
+  { "key": "alt+f12", "command": "editor.action.peekDefinition" },
+
+  // Find all references
+  { "key": "shift+f12", "command": "editor.action.findAllReferences" },
+
+  // Rename symbol (project-wide)
+  { "key": "f2", "command": "editor.action.rename" },
+
+  // Toggle sidebar (more screen real estate)
+  { "key": "cmd+b", "command": "workbench.action.toggleSidebarVisibility" },
+
+  // Split editor
+  { "key": "cmd+\\", "command": "workbench.action.splitEditor" },
+
+  // Move line up/down
+  { "key": "alt+up", "command": "editor.action.moveLinesUpAction" },
+  { "key": "alt+down", "command": "editor.action.moveLinesDownAction" },
+
+  // Duplicate line
+  { "key": "shift+alt+down", "command": "editor.action.copyLinesDownAction" },
+
+  // Delete line
+  { "key": "cmd+shift+k", "command": "editor.action.deleteLines" },
+
+  // Multi-cursor (select all occurrences)
+  { "key": "cmd+shift+l", "command": "editor.action.selectHighlights" }
+]
+```
+
+## Color Theme & Icons
+
+I switch between two themes depending on lighting:
+
+- **Day**: GitHub Light (easy on the eyes in bright rooms)
+- **Night**: One Dark Pro (classic, high contrast)
+
+For file icons: **Material Icon Theme**. Makes scanning the file tree much faster.
+
+## Snippets That Save Time
+
+Custom snippets for patterns I type constantly:
+
+```json
+// typescript.json
+{
+  "Console log": {
+    "prefix": "cl",
+    "body": "console.log('$1:', $1);",
+    "description": "Console log with label"
+  },
+  "Arrow function": {
+    "prefix": "af",
+    "body": "const $1 = ($2) => {\n  $0\n};",
+    "description": "Arrow function"
+  },
+  "Async arrow function": {
+    "prefix": "aaf",
+    "body": "const $1 = async ($2) => {\n  $0\n};",
+    "description": "Async arrow function"
+  },
+  "Try-catch": {
+    "prefix": "tc",
+    "body": [
+      "try {",
+      "  $0",
+      "} catch (error) {",
+      "  console.error('Error:', error);",
+      "}"
+    ],
+    "description": "Try-catch block"
+  }
+}
+```
+
+## The Workflow
+
+Here's how these tools come together in practice:
+
+1. **Start a feature**: `Cmd+Shift+P` → `Git: Create Branch`
+2. **Find a file**: `Cmd+P` → type part of the name
+3. **Navigate code**: `Cmd+Click` on any symbol
+4. **Refactor**: `F2` to rename, then check all references with `Shift+F12`
+5. **Commit**: Open terminal (`Cmd+``), run `git add . && git commit`
+6. **Review changes**: GitLens shows the diff inline
+
+The key is staying in the editor. Every context switch—to browser, to terminal, to another app—costs mental energy. The more you can do without leaving VS Code, the faster you move.
+
+## What I Don't Use
+
+Equally important is what I've removed:
+
+- **Too many extensions**: Each one adds startup time and potential conflicts
+- **Heavy themes**: Fancy animations slow things down
+- **Overloaded status bar**: I hide most status bar items
+- **Extension packs**: Install only what you actually use
+
+Less is more. A lean setup is a fast setup.
+
+## Try It
+
+Here's a quick way to bootstrap this setup:
+
+```bash
+# Install extensions via CLI
+code --install-extension dbaeumer.vscode-eslint
+code --install-extension esbenp.prettier-vscode
+code --install-extension usernamehw.errorlens
+code --install-extension yoavbls.pretty-ts-errors
+code --install-extension eamodio.gitlens
+code --install-extension Angular.ng-template
+code --install-extension bradlc.vscode-tailwindcss
+```
+
+Then copy the settings above into your `settings.json`. Give it a week, and you'll wonder how you coded any other way.
+
+---
+
+*What's in your setup? I'm always looking for new tools and workflows. [Drop me a message](/contact) with your favorites.*

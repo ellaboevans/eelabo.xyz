@@ -1,0 +1,302 @@
+---
+title: "Why I Built a Custom Angular Schematic (And How You Can Too)"
+description: "How I automated Angular best practices like OnPush change detection into a custom schematic—and why creating your own developer tools might be the best investment you make."
+keywords: ["Angular", "Schematics", "CLI", "Developer Tools", "OnPush", "Change Detection", "Code Generation"]
+author: "Evans Elabo"
+published: true
+coverImage: "https://images.unsplash.com/photo-1761623135109-d7df96aea6d5?q=80&w=2815&auto=format&fit=crop"
+createdAt: "2026-02-20T08:00:00.000Z"
+updatedAt: "2026-02-20T12:00:00.000Z"
+---
+
+Every Angular project I've worked on has the same ritual: generate a component, then immediately change the change detection strategy to `OnPush`. Every. Single. Time.
+
+After doing this manually for the hundredth time, I thought, *there has to be a better way*.
+
+That's why I built **[Schematics](https://github.com/ellaboevans/schematics)**, a custom Angular schematic that generates components with `ChangeDetectionStrategy.OnPush` by default, plus a few other sensible defaults I always end up adding.
+
+This post isn't just about my schematic, it's about why building your own developer tools might be one of the best investments you make.
+
+## The Problem with Defaults
+
+The Angular CLI's default component generation looks like this:
+
+```bash
+ng generate component user-profile
+```
+
+Which creates:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html',
+  styleUrls: ['./user-profile.component.scss']
+})
+export class UserProfileComponent {
+}
+```
+
+There's nothing *wrong* with this. But if you care about performance, you'll immediately add:
+
+```typescript
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
+@Component({
+  selector: 'app-user-profile',
+  templateUrl: './user-profile.component.html',
+  styleUrls: ['./user-profile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush // 👈 Every time
+})
+export class UserProfileComponent {
+}
+```
+
+Multiply this by hundreds of components across multiple projects, and you've wasted hours on a completely automatable task.
+
+## Why OnPush Matters
+
+Quick refresher: Angular's default change detection runs on *every* browser event, clicks, hovers, API responses, timers. For every event, Angular checks every component in the tree to see if anything changed.
+
+`OnPush` tells Angular: "Only check this component if its inputs change or an event originates from within." This can dramatically reduce the number of checks, especially in large applications.
+
+The catch? You need to be intentional about your data flow. Mutating objects won't trigger updates, you need immutable patterns. But once you're in that mindset, `OnPush` is pure performance gold.
+
+## Enter Schematics
+
+Angular Schematics is a workflow tool that transforms your project by generating or modifying files based on templates. The CLI uses schematics under the hood; `ng generate component` is just invoking the `@schematics/angular` collection.
+
+The beautiful part? You can create your own.
+
+## What My Schematic Does
+
+Here's what happens when you run:
+
+```bash
+ng generate @small_god/schematics:component user-profile
+```
+
+You get:
+
+```typescript
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
+@Component({
+  selector: 'app-user-profile',
+  standalone: true,
+  imports: [],
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class UserProfileComponent {
+}
+```
+
+Key differences:
+- **OnPush by default**: No more manual additions
+- **Standalone by default**: Modern Angular pattern
+- **Consistent structure**: Every component follows the same pattern
+
+## Building Your Own Schematic
+
+Let's walk through creating a basic schematic. You'll need:
+
+```bash
+npm install -g @angular-devkit/schematics-cli
+schematics blank --name=my-schematics
+cd my-schematics
+```
+
+### 1. Define Your Collection
+
+The `collection.json` declares what schematics are available:
+
+```json
+// src/collection.json
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "component": {
+      "description": "Generate a component with OnPush",
+      "factory": "./component/index#component",
+      "schema": "./component/schema.json"
+    }
+  }
+}
+```
+
+### 2. Create the Schema
+
+The schema defines what options your schematic accepts:
+
+```json
+// src/component/schema.json
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "MyComponentSchema",
+  "title": "My Component Options",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the component",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      }
+    },
+    "path": {
+      "type": "string",
+      "description": "The path to create the component"
+    },
+    "standalone": {
+      "type": "boolean",
+      "default": true,
+      "description": "Generate a standalone component"
+    }
+  },
+  "required": ["name"]
+}
+```
+
+### 3. Create Templates
+
+Templates use Angular's template syntax with EJS-style interpolation:
+
+```typescript
+// src/component/files/__name@dasherize__/__name@dasherize__.component.ts.template
+
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+
+@Component({
+  selector: 'app-<%= dasherize(name) %>',
+  standalone: <%= standalone %>,
+  imports: [],
+  templateUrl: './<%= dasherize(name) %>.component.html',
+  styleUrl: './<%= dasherize(name) %>.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class <%= classify(name) %>Component {
+}
+```
+
+The `@dasherize` and `@classify` are string utilities—they transform `UserProfile` into `user-profile` and `user-profile` into `UserProfile`, respectively.
+
+### 4. Wire Up the Factory
+
+The factory function orchestrates everything:
+
+```typescript
+// src/component/index.ts
+import {
+  Rule,
+  SchematicContext,
+  Tree,
+  apply,
+  url,
+  template,
+  move,
+  chain,
+  mergeWith,
+} from '@angular-devkit/schematics';
+import { strings } from '@angular-devkit/core';
+
+export interface ComponentOptions {
+  name: string;
+  path?: string;
+  standalone?: boolean;
+}
+
+export function component(options: ComponentOptions): Rule {
+  return (tree: Tree, context: SchematicContext) => {
+    const path = options.path || 'src/app';
+
+    const templateSource = apply(url('./files'), [
+      template({
+        ...strings, // dasherize, classify, camelize, etc.
+        ...options,
+      }),
+      move(`${path}/${strings.dasherize(options.name)}`),
+    ]);
+
+    return chain([
+      mergeWith(templateSource),
+    ])(tree, context);
+  };
+}
+```
+
+### 5. Build and Test
+
+```bash
+npm run build
+schematics .:component user-profile --dry-run
+```
+
+The `--dry-run` flag shows what files would be created without actually creating them. Once you're happy, remove the flag.
+
+## Publishing Your Schematic
+
+To share with your team (or the world):
+
+```bash
+npm login
+npm publish
+```
+
+Then in any Angular project:
+
+```bash
+npm install @your-username/schematics
+ng generate @your-username/schematics:component my-component
+```
+
+Or set it as the default:
+
+```json
+// angular.json
+{
+  "cli": {
+    "schematicCollections": ["@your-username/schematics", "@schematics/angular"]
+  }
+}
+```
+
+Now `ng generate component` uses your schematic first!
+
+## Beyond Components
+
+Once you start thinking in schematics, you see opportunities everywhere:
+
+- **Feature modules** with pre-configured routing
+- **Service patterns** with error handling baked in
+- **State management** scaffolds (NgRx entities, signals stores)
+- **API integration** boilerplate with typed HTTP clients
+
+Each schematic encodes your team's best practices into an executable workflow. New developers get consistency from day one. Senior developers stop answering the same questions.
+
+## The Bigger Picture
+
+Building developer tools is a form of **leverage**. You spend a few hours once, and the tool saves minutes every day, for every developer, forever.
+
+I spent maybe 4 hours building my schematics package. At 30 seconds saved per component, across hundreds of components, across years, that's easily a thousand hours returned to the team.
+
+More importantly, it removes a decision point. Developers don't have to *remember* to use OnPush; it just happens. The pit of success gets a little wider.
+
+## Try It Out
+
+My schematic is open source:
+
+```bash
+npm install @small_god/schematics
+ng generate @small_god/schematics:component my-component
+```
+
+Check out the [source code](https://github.com/ellaboevans/schematics) to see how it works, or fork it to build your own.
+
+---
+
+*What repetitive tasks are eating your time? Sometimes the best investment is building the tool that solves the problem once and for all. [Let's talk](/contact) about developer productivity.*

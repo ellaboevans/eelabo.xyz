@@ -1,0 +1,328 @@
+---
+title: "Building Type-Safe APIs with NestJS and Prisma"
+description: "Learn how to build robust, fully type-safe REST APIs using NestJS and Prisma ORM. From schema design to validation, this guide covers the patterns that keep your backend bulletproof."
+keywords: ["NestJS", "Prisma", "TypeScript", "API", "Type Safety", "Backend", "REST API", "ORM"]
+author: "Evans Elabo"
+published: true
+coverImage: "https://images.unsplash.com/photo-1762227144877-311d07ba71e6?q=80&w=3520&auto=format&fit=crop"
+createdAt: "2026-03-15T09:00:00.000Z"
+updatedAt: "2026-03-15T14:00:00.000Z"
+---
+
+Building APIs that don't break is hard. Building APIs that tell you *exactly* what's wrong before they break? That's the dream. In this post, I'll walk you through how I structure my NestJS + Prisma projects to achieve end-to-end type safety—from database schema to API response.
+
+This isn't just theory. These patterns come from building production systems like **JED**, an event management platform where a type error in the voting system could mean chaos.
+
+## Why Type Safety Matters
+
+Here's a scenario: you rename a database column from `userId` to `creatorId`. In a loosely-typed codebase, you deploy, and suddenly your API is returning `undefined` for every user reference. In a type-safe codebase, your build fails immediately, pointing to every place that needs updating.
+
+Type safety isn't about being pedantic—it's about **sleeping well at night**.
+
+## The Stack
+
+- **NestJS** — Structured, opinionated Node.js framework
+- **Prisma** — Type-safe ORM with auto-generated types
+- **TypeScript** — The glue that holds it all together
+- **Zod** — Runtime validation that mirrors your types
+
+## Step 1: Define Your Prisma Schema
+
+Everything starts with your data model. Prisma schemas are declarative and generate TypeScript types automatically.
+
+```prisma
+// prisma/schema.prisma
+model Event {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  creatorId   String
+  creator     User     @relation(fields: [creatorId], references: [id])
+  votes       Vote[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  events    Event[]
+  votes     Vote[]
+  createdAt DateTime @default(now())
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  choice    String
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId]) // One vote per user per event
+}
+```
+
+After running `npx prisma generate`, you get fully typed client methods:
+
+```typescript
+// This is fully typed - TypeScript knows exactly what fields exist
+const event = await prisma.event.findUnique({
+  where: { id: eventId },
+  include: { creator: true, votes: true }
+});
+
+// event.creator.name is typed as string
+// event.votes is typed as Vote[]
+```
+
+## Step 2: Create DTOs with Validation
+
+DTOs (Data Transfer Objects) define what your API accepts. I use **class-validator** for decorators and **Zod** for complex validation.
+
+```typescript
+// src/events/dto/create-event.dto.ts
+import { IsString, IsDateString, IsOptional, MinLength } from 'class-validator';
+
+export class CreateEventDto {
+  @IsString()
+  @MinLength(3, { message: 'Title must be at least 3 characters' })
+  title: string;
+
+  @IsString()
+  @IsOptional()
+  description?: string;
+
+  @IsDateString()
+  startDate: string;
+
+  @IsDateString()
+  endDate: string;
+}
+```
+
+Enable global validation in your `main.ts`:
+
+```typescript
+// src/main.ts
+import { ValidationPipe } from '@nestjs/common';
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true, // Strip unknown properties
+    forbidNonWhitelisted: true, // Throw on unknown properties
+    transform: true, // Auto-transform payloads to DTO instances
+  }));
+
+  await app.listen(3000);
+}
+```
+
+Now invalid requests get rejected **before** they reach your business logic:
+
+```json
+// POST /events with invalid body
+{
+  "title": "Hi",
+  "startDate": "not-a-date"
+}
+
+// Response: 400 Bad Request
+{
+  "statusCode": 400,
+  "message": [
+    "Title must be at least 3 characters",
+    "startDate must be a valid ISO 8601 date string"
+  ],
+  "error": "Bad Request"
+}
+```
+
+## Step 3: Type Your Service Layer
+
+Your service layer should use Prisma's generated types. Here's where the magic happens:
+
+```typescript
+// src/events/events.service.ts
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from '../prisma/prisma.service';
+import { CreateEventDto } from './dto/create-event.dto';
+import { Prisma } from '@prisma/client';
+
+@Injectable()
+export class EventsService {
+  constructor(private prisma: PrismaService) {}
+
+  async create(dto: CreateEventDto, userId: string) {
+    // Prisma.EventCreateInput is auto-generated from your schema
+    const data: Prisma.EventCreateInput = {
+      title: dto.title,
+      description: dto.description,
+      startDate: new Date(dto.startDate),
+      endDate: new Date(dto.endDate),
+      creator: { connect: { id: userId } },
+    };
+
+    return this.prisma.event.create({
+      data,
+      include: { creator: true }
+    });
+  }
+
+  async findOne(id: string) {
+    const event = await this.prisma.event.findUnique({
+      where: { id },
+      include: {
+        creator: true,
+        votes: { include: { user: true } }
+      },
+    });
+
+    if (!event) {
+      throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+
+    return event;
+  }
+
+  async vote(eventId: string, userId: string, choice: string) {
+    // Prisma enforces the unique constraint - duplicate votes throw
+    return this.prisma.vote.create({
+      data: {
+        event: { connect: { id: eventId } },
+        user: { connect: { id: userId } },
+        choice,
+      },
+    });
+  }
+}
+```
+
+## Step 4: Response Types with Transformations
+
+Sometimes you need to transform data before sending it. Use **class-transformer** to control what gets serialized:
+
+```typescript
+// src/events/entities/event.entity.ts
+import { Exclude, Expose, Type } from 'class-transformer';
+
+export class UserEntity {
+  id: string;
+  name: string;
+  email: string;
+
+  @Exclude() // Never expose this
+  password?: string;
+}
+
+export class EventEntity {
+  id: string;
+  title: string;
+  description: string | null;
+  startDate: Date;
+  endDate: Date;
+
+  @Type(() => UserEntity)
+  creator: UserEntity;
+
+  @Expose() // Computed property
+  get isActive(): boolean {
+    const now = new Date();
+    return now >= this.startDate && now <= this.endDate;
+  }
+
+  constructor(partial: Partial<EventEntity>) {
+    Object.assign(this, partial);
+  }
+}
+```
+
+Use it in your controller:
+
+```typescript
+// src/events/events.controller.ts
+@Controller('events')
+export class EventsController {
+  constructor(private eventsService: EventsService) {}
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const event = await this.eventsService.findOne(id);
+    return new EventEntity(event); // Applies transformations
+  }
+}
+```
+
+## Step 5: Error Handling That Makes Sense
+
+Prisma throws specific error codes. Catch them to return meaningful responses:
+
+```typescript
+// src/common/filters/prisma-exception.filter.ts
+import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+
+@Catch(Prisma.PrismaClientKnownRequestError)
+export class PrismaExceptionFilter implements ExceptionFilter {
+  catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse();
+
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Database error';
+
+    switch (exception.code) {
+      case 'P2002': // Unique constraint violation
+        status = HttpStatus.CONFLICT;
+        message = 'A record with this value already exists';
+        break;
+      case 'P2025': // Record not found
+        status = HttpStatus.NOT_FOUND;
+        message = 'Record not found';
+        break;
+      case 'P2003': // Foreign key constraint failed
+        status = HttpStatus.BAD_REQUEST;
+        message = 'Related record does not exist';
+        break;
+    }
+
+    response.status(status).json({
+      statusCode: status,
+      message,
+      error: exception.code,
+    });
+  }
+}
+```
+
+## The Full Picture
+
+When everything connects, you get a flow like this:
+
+1. **Request comes in** → ValidationPipe validates against DTO
+2. **DTO passes** → Controller calls service with typed parameters
+3. **Service executes** → Prisma provides typed queries and results
+4. **Response transforms** → Entity classes control serialization
+5. **Errors handled** → Custom filters return consistent error formats
+
+At every step, TypeScript is watching. Rename a field? The compiler tells you everywhere it's used. Add a required property? Every usage site lights up red until you handle it.
+
+## Key Takeaways
+
+1. **Start with your schema**: Prisma generates types from your database model
+2. **Validate at the edge**: DTOs catch bad data before it reaches business logic
+3. **Trust your types**: Avoid `any` like the plague
+4. **Transform responses**: Control exactly what leaves your API
+5. **Handle errors consistently**: Custom filters for Prisma errors
+
+Type safety isn't a luxury, it's insurance. The hour you spend setting up proper types saves you days of debugging mysterious runtime errors in production.
+
+---
+
+*Building something with NestJS + Prisma? I'd love to hear about it. [Reach out](/contact) or [book a call](/book) to chat about your architecture.*
