@@ -47,7 +47,7 @@ export default function ContactPage() {
         hear from you. Fill out the form below or reach out through any of my social channels.
       </p>
 
-      <div className="mt-10 grid gap-8 lg:grid-cols-2">
+      <div className="mt-10 grid gap-4 lg:grid-cols-2">
         <div>
           <h2 className="text-xl font-bold mb-6 text-stone-900 dark:text-stone-100">
             Send a Message
