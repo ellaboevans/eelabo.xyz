@@ -39,43 +39,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       )}`;
   const ogImageUrl = post.ogImage ? `${siteUrl}${post.ogImage}` : image;
 
-  console.log("Generating metadata for:", slug);
-  console.log("Canonical URL:", canonicalUrl);
-  console.log("OG Image URL:", ogImageUrl);
+return {
+  title: post.title,
+  description: post.description,
 
-  return {
+  alternates: {
+    canonical: canonicalUrl,
+  },
+
+  openGraph: {
+    type: "article",
+    url: canonicalUrl,
     title: post.title,
     description: post.description,
+    publishedTime: new Date(post.createdAt).toISOString(),
+    authors: post.author ? [post.author] : undefined,
+    tags: post.keywords,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: post.title,
+      },
+    ],
+  },
 
-    alternates: {
-      canonical: canonicalUrl,
-    },
-
-    openGraph: {
-      type: "article",
-      url: canonicalUrl,
-      title: post.title,
-      description: post.description,
-      publishedTime: new Date(post.createdAt).toISOString(),
-      authors: post.author ? [post.author] : undefined,
-      tags: post.keywords,
-      images: [
-        {
-          url: ogImageUrl,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.description,
-      images: [ogImageUrl],
-    },
-  };
+  twitter: {
+    card: "summary_large_image",
+    title: post.title,
+    description: post.description,
+    images: [ogImageUrl],
+  },
+};
 }
  
 
