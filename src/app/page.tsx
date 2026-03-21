@@ -75,7 +75,7 @@ export default function Home() {
           rel="noopener noreferrer"
           className=" opacity-60 hover:opacity-100 transition-all duration-300"
         >
-          <Icon icon={"hugeicons:new-twitter"} className=" w-6 h-6" />
+          <Icon icon={"line-md:twitter-x"} className=" w-6 h-6" />
         </a>
 
         <div className="w-full relative my-2">
