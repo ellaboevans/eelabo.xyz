@@ -34,17 +34,17 @@ const menuVariants = {
   closed: {
     x: "-100%",
     transition: {
-      type: "tween",
+      type: "tween" as const,
       duration: 0.35,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
   open: {
     x: "0%",
     transition: {
-      type: "tween",
+      type: "tween" as const,
       duration: 0.35,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
 };
@@ -62,7 +62,7 @@ const navItemVariants = {
     transition: {
       delay: 0.15 + i * 0.07,
       duration: 0.3,
-      ease: [0.4, 0, 0.2, 1],
+      ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   }),
 };
