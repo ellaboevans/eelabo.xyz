@@ -2,6 +2,7 @@ import Back from "@/components/back";
 import { format, formatDistanceToNow } from "date-fns";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
+import BlogReactions from "../_components/blog-reactions";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -152,14 +153,14 @@ export default async function BlogPage({
         prose-img:h-auto prose-p:text-stone-700 dark:prose-li:text-stone-300 prose-strong:text-inherit prose-li:text-stone-700 dark:prose-p:text-stone-300 prose-img:object-cover prose-img:object-center dark:prose-a:text-stone-300"
       >
         <Back />
-        <h1 className="!leading-10 font-extrabold">{title}</h1>
+        <h1 className="leading-10! font-extrabold">{title}</h1>
         <div className="flex text-xs sm:text-sm items-center gap-2 justify-between">
           <section className="flex items-center gap-2">
-            <p className="text-stone-700  !my-0">{format(createdAt, "MMMM d, yyyy")}</p>
-            <p className="text-stone-700 !my-0">•</p>
-            <p className=" !my-0">{readTime} min read</p>
+            <p className="text-stone-700  my-0!">{format(createdAt, "MMMM d, yyyy")}</p>
+            <p className="text-stone-700 my-0!">•</p>
+            <p className=" my-0!">{readTime} min read</p>
           </section>
-          <p className="text-stone-700 hidden sm:block !my-0">
+          <p className="text-stone-700 hidden sm:block my-0!">
             Updated{" "}
             {formatDistanceToNow(updatedAt, {
               addSuffix: true,
@@ -171,6 +172,7 @@ export default async function BlogPage({
         {/* </div> */}
         <Post />
       </article>
+      <BlogReactions slug={slug} />
     </BlogPostWrapper>
   );
 }
