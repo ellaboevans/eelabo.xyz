@@ -3,7 +3,6 @@ import { format, formatDistanceToNow } from "date-fns";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
 import BlogReactions from "../_components/blog-reactions";
-import AudioReader from "../_components/audio-reader";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -171,7 +170,6 @@ export default async function BlogPage({
         {/* <div className="w-full outline mt-10 sm:max-h-96 overflow-hidden rounded-lg"> */}
         <Image src={coverImage} alt={title} width={500} height={500} className="h-full w-full" />
         {/* </div> */}
-        <AudioReader />
         <Post />
       </article>
       <BlogReactions slug={slug} />
