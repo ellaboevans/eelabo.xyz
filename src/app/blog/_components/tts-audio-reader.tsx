@@ -47,7 +47,7 @@ export default function TTSAudioReader({
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [speed, setSpeed] = useState<PlaybackSpeed>(1);
+  const [speed, setSpeed] = useState<PlaybackSpeed>(0.75);
   const [isSupported, setIsSupported] = useState(true);
   const [isDismissed, setIsDismissed] = useState(false);
 
@@ -338,7 +338,7 @@ export default function TTSAudioReader({
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.2, ease: [0.32, 0.72, 0, 1] }}
-        className="sticky top-16 z-40 mb-4 -mx-4 sm:mx-0"
+        className="sticky top-16 sm:top-14 z-40 mb-4 -mx-4 sm:mx-0"
         role="region"
         aria-label="Text-to-speech audio player"
       >
@@ -407,7 +407,7 @@ export default function TTSAudioReader({
 
             {/* Waveform Animation */}
             <div className="flex items-center gap-0.75 h-6" aria-hidden="true">
-              {[0, 1, 2, 3, 4,].map((i) => (
+              {[0, 1, 2, 3, 4].map((i) => (
                 <motion.div
                   key={i}
                   className="w-1 bg-amber-500 rounded-full"
@@ -431,7 +431,6 @@ export default function TTSAudioReader({
               <span aria-label={`Current time: ${formatTime(currentTime)}`}>
                 {formatTime(currentTime)}
               </span>
-             
             </div>
 
             {/* Status Label */}
