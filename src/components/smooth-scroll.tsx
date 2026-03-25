@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Lenis from "lenis";
 
 export default function SmoothScroll() {
-  useEffect(() => {
-    const win = globalThis.window;
+  const lenisRef = useRef<Lenis | null>(null);
+  const rafIdRef = useRef<number>(0);
 
-    if (!win) {
+  useEffect(() => {
+    if (typeof globalThis === "undefined") {
       return;
     }
 
@@ -17,27 +18,49 @@ export default function SmoothScroll() {
       return;
     }
 
+    // Clean up any existing instance first
+    if (lenisRef.current) {
+      lenisRef.current.destroy();
+    }
+
     const lenis = new Lenis({
       duration: 1.5,
       smoothWheel: true,
-      wheelMultiplier: 0.9,
-      touchMultiplier: 1.1,
-      autoRaf: false,
-      anchors: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      infinite: false,
+      autoResize: true,
     });
 
-    let rafId = 0;
+    lenisRef.current = lenis;
 
     const raf = (time: number) => {
       lenis.raf(time);
-      rafId = globalThis.requestAnimationFrame(raf);
+      rafIdRef.current = requestAnimationFrame(raf);
     };
 
-    rafId = globalThis.requestAnimationFrame(raf);
+    rafIdRef.current = requestAnimationFrame(raf);
+
+    // Handle visibility change to prevent scroll lock when tab is inactive
+    const handleVisibilityChange = () => {
+      if (!lenisRef.current) return;
+
+      if (document.hidden) {
+        lenisRef.current.stop();
+      } else {
+        lenisRef.current.start();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      globalThis.cancelAnimationFrame(rafId);
-      lenis.destroy();
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      cancelAnimationFrame(rafIdRef.current);
+      if (lenisRef.current) {
+        lenisRef.current.destroy();
+        lenisRef.current = null;
+      }
     };
   }, []);
 
