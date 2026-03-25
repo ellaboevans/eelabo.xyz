@@ -2,6 +2,7 @@ import Back from "@/components/back";
 import { format, formatDistanceToNow } from "date-fns";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
+import TTSAudioReader from "../_components/tts-audio-reader";
 import BlogReactions from "../_components/blog-reactions";
 import Image from "next/image";
 import type { Metadata } from "next";
@@ -147,6 +148,7 @@ export default async function BlogPage({
   return (
     <BlogPostWrapper>
       <JsonLd id={`blog-post-schema-${slug}`} data={[blogPostSchema, breadcrumbSchema]} />
+
       <ReadingProgressBar readTime={readTime} />
       <article
         className="w-full mt-10 prose max-w-none prose-headings:mt-6 prose-img:rounded-lg prose-img:w-full prose-headings:font-semibold prose-headings:text-stone-600 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg prose-h5:text-lg prose-h6:text-lg dark:prose-headings:text-white
@@ -154,13 +156,13 @@ export default async function BlogPage({
       >
         <Back />
         <h1 className="leading-10! font-extrabold">{title}</h1>
-        <div className="flex text-xs sm:text-sm items-center gap-2 justify-between">
+        <div data-tts-ignore className="flex text-xs sm:text-sm items-center gap-2 justify-between">
           <section className="flex items-center gap-2">
             <p className="text-stone-700  my-0!">{format(createdAt, "MMMM d, yyyy")}</p>
             <p className="text-stone-700 my-0!">•</p>
             <p className=" my-0!">{readTime} min read</p>
           </section>
-          <p className="text-stone-700 hidden sm:block my-0!">
+          <p data-tts-ignore className="text-stone-700 hidden sm:block my-0!">
             Updated{" "}
             {formatDistanceToNow(updatedAt, {
               addSuffix: true,
@@ -170,7 +172,10 @@ export default async function BlogPage({
         {/* <div className="w-full outline mt-10 sm:max-h-96 overflow-hidden rounded-lg"> */}
         <Image src={coverImage} alt={title} width={500} height={500} className="h-full w-full" />
         {/* </div> */}
-        <Post />
+        <TTSAudioReader articleSelector="#tts-content" />
+        <div id="tts-content">
+          <Post />
+        </div>
       </article>
       <BlogReactions slug={slug} />
     </BlogPostWrapper>
