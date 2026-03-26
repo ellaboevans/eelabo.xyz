@@ -4,6 +4,7 @@ import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
 import TTSAudioReader from "../_components/tts-audio-reader";
 import BlogReactions from "../_components/blog-reactions";
+import { CommentSection } from "../_components/comments";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -178,6 +179,7 @@ export default async function BlogPage({
         </div>
       </article>
       <BlogReactions slug={slug} />
+      <CommentSection slug={slug} />
     </BlogPostWrapper>
   );
 }
