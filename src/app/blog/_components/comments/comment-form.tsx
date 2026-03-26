@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, SyntheticEvent } from "react";
 import { generateGradient, getInitials } from "@/lib/types/comment";
 
 interface CommentFormProps {
@@ -18,7 +18,7 @@ export default function CommentForm({ slug, onCommentAdded }: Readonly<CommentFo
   const gradient = name.trim().length >= 2 ? generateGradient(name) : "linear-gradient(135deg, #ccc, #999)";
   const initials = name.trim().length >= 2 ? getInitials(name) : "?";
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     setError(null);
 
