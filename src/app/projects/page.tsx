@@ -34,6 +34,30 @@ type Project = {
 
 const allProjects: Project[] = [
   {
+    title: "Ark: VS Code Disaster Recovery",
+    description:
+      "A VS Code extension that backs up and restores your entire environment (extensions, settings, keybindings) in one click. Never lose your setup again.",
+    longDescription:
+      "Ark is a disaster recovery tool for developers. It securely backs up your VS Code environment to a private GitHub Gist and restores it instantly, with a smart diff preview and one-click recovery. Open source, privacy-first, and built for productivity.",
+    link: "https://marketplace.visualstudio.com/items?itemName=ellaboevans.ark-disaster-recovery",
+    github: "https://github.com/ellaboevans/ark",
+    stack: [
+      { label: "TypeScript", icon: "logos:typescript-icon" },
+      { label: "VS Code API", icon: "vscode-icons:file-type-vscode" },
+      { label: "GitHub Gist", icon: "logos:github-icon" },
+    ],
+    colors: "bg-yellow-900/30 text-yellow-400 border border-dashed border-yellow-500/30",
+    tag: ["tool", "open-source", "productivity"],
+    highlights: [
+      "One-click backup and restore",
+      "Smart diff preview before restore",
+      "Auto-backup, privacy-first (no third-party servers)",
+      "Open source and auditable",
+    ],
+    role: "Creator",
+    year: "2026",
+  },
+  {
     title: "ST School",
     description:
       "A school management application designed to streamline administrative tasks and enhance communication between instructors and students.",

@@ -11,10 +11,10 @@ const routes = [
     label: "Blog",
     path: "/blog",
   },
-  // {
-  //   label: "Projects",
-  //   path: "/projects",
-  // },
+  {
+    label: "Projects",
+    path: "/projects",
+  },
   {
     label: "Playground",
     path: "/playground",

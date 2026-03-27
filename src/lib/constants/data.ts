@@ -1,5 +1,18 @@
 export const projects = [
   {
+    title: "Ark: VS Code Disaster Recovery",
+    description:
+      "A VS Code extension that backs up and restores your entire environment (extensions, settings, keybindings) in one click. Never lose your setup again.",
+    link: "https://marketplace.visualstudio.com/items?itemName=ellaboevans.ark-disaster-recovery",
+    stack: [
+      { label: "TypeScript", icon: "logos:typescript-icon" },
+      { label: "VS Code API", icon: "vscode-icons:file-type-vscode" },
+      { label: "GitHub Gist", icon: "logos:github-icon" },
+    ],
+    colors: "bg-yellow-900/30 text-yellow-400 border border-dashed border-yellow-500/30",
+    tag: ["tool", "open-source", "productivity"],
+  },
+  {
     title: "ST School",
     description:
       "A school management application designed to streamline administrative tasks and enhance communication between instructors, and students.",
