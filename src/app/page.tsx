@@ -10,7 +10,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "Software Engineer - Evans Elabo",
   description:
-    "I am a Ghanaian software engineer focused on sytem architecture, systems engineering, open-source projects, and developer tools. Writing code is always the last thing I do. I think through problems, design solutions, and build consensus before writing a single line of code.",
+    "I am a Ghanaian software engineer focused on system architecture, systems engineering, open-source projects, and developer tools. Writing code is always the last thing I do. I think through problems, design solutions, and build consensus before writing a single line of code.",
   path: "/",
   keywords: [
     "Evans Elabo",
@@ -91,8 +91,8 @@ export default function Home() {
 
         <div className="w-full relative my-2">
           <hr className="w-full border-stone-200 dark:border-stone-700" />
-          <div className="absolute top-0 left-0 right-0 h-[1px] overflow-hidden">
-            <div className="h-full w-1/3 bg-gradient-to-r from-transparent via-stone-500 dark:via-stone-400 to-transparent animate-shootingStar"></div>
+          <div className="absolute top-0 left-0 right-0 h-px overflow-hidden">
+            <div className="h-full w-1/3 bg-linear-to-r from-transparent via-stone-500 dark:via-stone-400 to-transparent animate-shootingStar"></div>
           </div>
         </div>
       </section>
@@ -122,10 +122,10 @@ export default function Home() {
             );
           })}
           <Link
-            href={"https://github.com/ellaboevans?tab=repositories"}
+            href={"/projects"}
             className=" flex items-center gap-0 underline hover:gap-1 transition-all duration-300"
           >
-            See archived projects <Icon className=" rotate-90" icon={"stash:arrow-up-light"} />
+            Featured Projects <Icon className="rotate-45!" icon={"stash:arrow-up-light"} />
           </Link>
         </section>
       </section>
@@ -155,7 +155,7 @@ export default function Home() {
                     part.startsWith("`") && part.endsWith("`") ? (
                       <code
                         key={index + 1}
-                        className="bg-gray-800 !text-red-400 px-1 rounded text-sm font-mono"
+                        className="bg-gray-800 text-red-400! px-1 rounded text-sm font-mono"
                       >
                         {part.slice(1, -1)}
                       </code>
