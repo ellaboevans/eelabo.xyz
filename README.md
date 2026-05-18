@@ -1,4 +1,4 @@
-## The Evans Elabo — Portfolio
+## Evans Elabo — Portfolio
 
 Welcome to the source code of my personal portfolio — a space where I showcase my work, experiments, and ideas across front-end development, UI engineering, and interactive design.
 
