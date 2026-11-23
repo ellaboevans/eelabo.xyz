@@ -23,7 +23,7 @@ export const impactMetrics = [
     icon: "ph:paint-brush-broad-bold",
   },
   {
-    label: "First Research",
+    label: "Research",
     value: "Ghanaian LangID",
     description: "Akan varieties & error analysis in NLP",
     icon: "ph:translate-bold",
@@ -72,12 +72,12 @@ export const projects: Project[] = [
   {
     title: "Ghanaian Language Identification & Error Analysis",
     description:
-      "First computational linguistics evaluation measuring how off-the-shelf LID systems (GlotLID, AfroLID) and linear SVM baselines perform across Twi, Fante, Nzema, and Ghanaian Pidgin.",
+      "A computational linguistics evaluation measuring how off-the-shelf LID systems (GlotLID, AfroLID) and linear SVM baselines perform across Twi, Fante, Nzema, and Ghanaian Pidgin.",
     longDescription:
-      "Evans's first language research study investigating how well off-the-shelf LID systems separate closely related Ghanaian language varieties along the Akan continuum. The study reveals critical real-world failure modes: informal orthography (typing e/o instead of standard Ghanaian vowels ɛ/ɔ) causes error rates to spike up to 88%, pretrained models only recognize Ghanaian Pidgin when it resembles Nigerian Pidgin (88% recall with Nigerian markers vs 22% without), and AfroLID falls back to Wolof for 48% of unplaced Pidgin tweets. Includes custom native Nzema sentences and a hand-checked social media evaluation corpus.",
+      "An empirical computational linguistics study investigating how well off-the-shelf LID systems separate closely related Ghanaian language varieties along the Akan continuum. The study reveals critical real-world failure modes: informal orthography (typing e/o instead of standard Ghanaian vowels ɛ/ɔ) causes error rates to spike up to 88%, pretrained models only recognize Ghanaian Pidgin when it resembles Nigerian Pidgin (88% recall with Nigerian markers vs 22% without), and AfroLID falls back to Wolof for 48% of unplaced Pidgin tweets. Includes custom native Nzema sentences and a hand-checked social media evaluation corpus.",
     link: "https://github.com/ellaboevans/ghanaian-langid-eval",
     github: "https://github.com/ellaboevans/ghanaian-langid-eval",
-    metric: "First Research",
+    metric: "Research",
     image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1200&auto=format&fit=crop",
     stack: [
       { label: "Python", icon: "logos:python" },

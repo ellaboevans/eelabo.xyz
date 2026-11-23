@@ -246,7 +246,7 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-bold tracking-tight">Computational Linguistics Research</h2>
                 <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                  First Language Research
+                  Research
                 </span>
               </div>
               <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
