@@ -27,6 +27,12 @@ const contactMethods = [
     href: "https://twitter.com/dev_concept",
   },
   {
+    icon: "line-md:linkedin",
+    label: "LinkedIn",
+    value: "evanselabo",
+    href: "https://linkedin.com/in/evanselabo",
+  },
+  {
     icon: "line-md:github-loop",
     label: "GitHub",
     value: "ellaboevans",

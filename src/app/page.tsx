@@ -86,6 +86,15 @@ export default function Home() {
           >
             <Icon icon={"line-md:twitter-x"} className="w-6 h-6" />
           </a>
+          <a
+            href="https://linkedin.com/in/evanselabo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-60 hover:opacity-100 transition-all duration-300 shrink-0"
+            aria-label="LinkedIn"
+          >
+            <Icon icon={"line-md:linkedin"} className="w-6 h-6" />
+          </a>
           <CalendlyButton
             className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
             ariaLabel="Book Consultation"

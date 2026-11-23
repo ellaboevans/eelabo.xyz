@@ -15,6 +15,7 @@ export const homeSchema: WithContext<Person | WebSite> = {
   sameAs: [
     "https://github.com/ellaboevans",
     "https://twitter.com/dev_concept",
+    "https://linkedin.com/in/evanselabo",
     "mailto:ellaboevans@gmail.com",
   ],
   description:
