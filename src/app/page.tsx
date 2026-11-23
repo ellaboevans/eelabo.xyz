@@ -254,15 +254,24 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <a
-            href="https://github.com/ellaboevans/ghanaian-langid-eval"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-colors w-fit shrink-0"
-          >
-            <Icon icon="line-md:github-loop" className="w-4 h-4" />
-            ghanaian-langid-eval
-          </a>
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/lab"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500 text-stone-950 hover:bg-amber-400 transition-colors cursor-pointer"
+            >
+              <Icon icon="ph:flask-bold" className="w-3.5 h-3.5" />
+              Open Lab
+            </Link>
+            <a
+              href="https://github.com/ellaboevans/ghanaian-langid-eval"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 hover:text-amber-500 transition-colors"
+            >
+              <Icon icon="line-md:github-loop" className="w-4 h-4" />
+              Repo
+            </a>
+          </div>
         </div>
 
         <div className="space-y-4 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
