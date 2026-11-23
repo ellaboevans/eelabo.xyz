@@ -7,6 +7,7 @@ import { homeSchema } from "@/schema/home-schema";
 import JsonLd from "@/components/json-ld";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import CalendlyButton from "@/components/calendly-button";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Software Engineer - Evans Elabo",
@@ -23,7 +24,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Home() {
-  const featuredProjects = projects.slice(0, 2);
+  const featuredProjects = projects.slice(0, 3);
   return (
     <div>
       <JsonLd id="home-schema" data={homeSchema as unknown as Record<string, unknown>} />
@@ -61,35 +62,36 @@ export default function Home() {
         </ExternalLink>{" "}
         if you'd like to work together on your next project.
       </div>
-      <section className="flex gap-4 py-6  text-black dark:text-stone-300 items-center">
-        <a
-          href="https://github.com/ellaboevans"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="  opacity-60 hover:opacity-100 transition-all duration-300"
-          aria-label="GitHub"
-        >
-          <Icon icon={"line-md:github-loop"} className=" w-6 h-6" />
-        </a>
-        <a
-          href="https://twitter.com/dev_concept"
-          target="_blank"
-          rel="noopener noreferrer"
-          className=" opacity-60 hover:opacity-100 transition-all duration-300"
-          aria-label="Twitter"
-        >
-          <Icon icon={"line-md:twitter-x"} className=" w-6 h-6" />
-        </a>
-        <Link
-          href="/book"
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300"
-          aria-label="Book Consultation"
-        >
-          <Icon icon="ph:calendar-check" className="w-3.5 h-3.5" />
-          Book Call
-        </Link>
+      <section className="flex gap-4 py-6 text-black dark:text-stone-300 items-center">
+        <div className="flex items-center gap-3 shrink-0">
+          <a
+            href="https://github.com/ellaboevans"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-60 hover:opacity-100 transition-all duration-300 shrink-0"
+            aria-label="GitHub"
+          >
+            <Icon icon={"line-md:github-loop"} className="w-6 h-6" />
+          </a>
+          <a
+            href="https://twitter.com/dev_concept"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-60 hover:opacity-100 transition-all duration-300 shrink-0"
+            aria-label="Twitter"
+          >
+            <Icon icon={"line-md:twitter-x"} className="w-6 h-6" />
+          </a>
+          <CalendlyButton
+            className="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+            ariaLabel="Book Consultation"
+          >
+            <Icon icon="ph:calendar-check" className="w-3.5 h-3.5" />
+            Book Call
+          </CalendlyButton>
+        </div>
 
-        <div className="w-full relative my-2">
+        <div className="flex-1 min-w-[30px] relative my-2">
           <hr className="w-full border-stone-200 dark:border-stone-700" />
           <div className="absolute top-0 left-0 right-0 h-px overflow-hidden">
             <div className="h-full w-1/3 bg-linear-to-r from-transparent via-stone-500 dark:via-stone-400 to-transparent animate-shootingStar"></div>

@@ -17,6 +17,12 @@ export type Project = {
 
 export const impactMetrics = [
   {
+    label: "Active Project",
+    value: "InkBoard",
+    description: "Living spatial poetry canvas (PWA)",
+    icon: "ph:paint-brush-broad-bold",
+  },
+  {
     label: "Processed Volume",
     value: "GH₵500K+",
     description: "JED event platform & USSD offline voting",
@@ -34,15 +40,35 @@ export const impactMetrics = [
     description: "Architecture, frameworks & career stories",
     icon: "ph:article-medium-bold",
   },
-  {
-    label: "Interactive Apps",
-    value: "4 Mini-Tools",
-    description: "SmallWorld developer experiments",
-    icon: "ph:code-bold",
-  },
 ];
 
 export const projects: Project[] = [
+  {
+    title: "InkBoard: Living Poetry Canvas",
+    description:
+      "A spatial, living public board of poems grouped by author. Wander the canvas, read new work, and follow your favorite poets.",
+    longDescription:
+      "InkBoard is a spatial, living canvas for poetry where poems are catalogued by author. Built as an offline-first PWA with dynamic canvas exploration, custom reading modes, typography controls, and automated Atom/RSS feeds.",
+    link: "https://tryinkboard.elabo.me",
+    metric: "Current Project",
+    image: "https://tryinkboard.elabo.me/opengraph-image?5d01efcadb5b8971",
+    stack: [
+      { label: "Next.js", icon: "logos:nextjs" },
+      { label: "TypeScript", icon: "logos:typescript-icon" },
+      { label: "Tailwind CSS", icon: "logos:tailwindcss-icon" },
+      { label: "PWA", icon: "logos:pwa" },
+    ],
+    colors: "bg-amber-900/10 text-amber-400 border border-amber-500/20",
+    tag: ["production", "frontend", "creative"],
+    highlights: [
+      "Spatial living canvas grouped by author",
+      "Offline-first PWA with custom reading view",
+      "Atom/RSS feed integration for automated poem distribution",
+      "Active production project (tryinkboard.elabo.me)",
+    ],
+    role: "Creator & Lead Engineer",
+    year: "2026",
+  },
   {
     title: "Ark: VS Code Disaster Recovery",
     description:

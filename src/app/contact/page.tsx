@@ -2,8 +2,8 @@ import { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import Back from "@/components/back";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
 import ContactForm from "./_components/contact-form";
+import CalendlyButton from "@/components/calendly-button";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Contact",
@@ -91,13 +91,12 @@ export default function ContactPage() {
             <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
               Book a free 30-minute consultation via Calendly to discuss your project in detail.
             </p>
-            <Link
-              href="/book"
-              className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 font-medium transition-colors"
+            <CalendlyButton
+              className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 font-medium transition-colors cursor-pointer"
             >
               Schedule via Calendly
               <Icon icon="ph:arrow-right" className="w-4 h-4" />
-            </Link>
+            </CalendlyButton>
           </div>
 
           <div className="mt-6 p-4 rounded-lg bg-stone-100/50 dark:bg-stone-800/50">

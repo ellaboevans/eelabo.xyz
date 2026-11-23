@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import Back from "@/components/back";
 import CalendlyEmbed from "./_components/calendly-embed";
+import CalendlyButton from "@/components/calendly-button";
+import { Icon } from "@iconify/react";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Book a Free Consultation with Evans Elabo",
@@ -45,11 +47,22 @@ export default function BookPage() {
         <Back />
       </div>
 
-      <h1 className="text-4xl pb-1 font-bold mt-8">Wanna Talk? Pick a Date</h1>
-      <p className="dark:text-stone-400 text-stone-500 mt-2">
-        Have a project in mind or need technical guidance? Let&apos;s chat! Schedule a free
-        consultation via Calendly and we&apos;ll discuss how I can help bring your ideas to life.
-      </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-8">
+        <div>
+          <h1 className="text-4xl pb-1 font-bold">Wanna Talk? Pick a Date</h1>
+          <p className="dark:text-stone-400 text-stone-500 mt-2">
+            Have a project in mind or need technical guidance? Let&apos;s chat! Schedule a free
+            consultation via Calendly and we&apos;ll discuss how I can help bring your ideas to life.
+          </p>
+        </div>
+        <CalendlyButton
+          url={calendlyUrl}
+          className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold bg-amber-500 text-stone-900 hover:bg-amber-400 shadow-xs transition-all duration-200 cursor-pointer text-sm"
+        >
+          <Icon icon="ph:calendar-check-bold" className="w-4 h-4" />
+          Open in Popup Modal
+        </CalendlyButton>
+      </div>
 
       <div className="mt-8 rounded-xl overflow-hidden min-h-[680px]">
         <CalendlyEmbed url={calendlyUrl} />
