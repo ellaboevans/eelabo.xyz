@@ -2,10 +2,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DigitalClock from "@/components/clock";
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Icon } from "@iconify/react";
 
 const routes = [
   {
@@ -69,16 +67,8 @@ const navItemVariants = {
 };
 
 function Navbar() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
-  const [mounted, setMounted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const isDark = (resolvedTheme || theme) === "dark";
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -148,24 +138,6 @@ function Navbar() {
 
         <section className="flex gap-2 items-center">
           <DigitalClock />
-
-          {/* Theme switcher */}
-          {mounted ? (
-            <button
-              type="button"
-              onClick={() => setTheme(isDark ? "light" : "dark")}
-              className="p-1.5 rounded-md text-stone-600 dark:text-stone-300 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-              aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-              title={isDark ? "Switch to light theme" : "Switch to dark theme"}
-            >
-              <Icon
-                icon={isDark ? "ph:sun-bold" : "ph:moon-bold"}
-                className="w-4 h-4"
-              />
-            </button>
-          ) : (
-            <div className="w-7 h-7" aria-hidden="true" />
-          )}
 
           {/* Hamburger button — mobile only */}
           <button
@@ -250,19 +222,6 @@ function Navbar() {
                 >
                   エバンズ
                 </Link>
-                {mounted && (
-                  <button
-                    type="button"
-                    onClick={() => setTheme(isDark ? "light" : "dark")}
-                    className="p-1.5 rounded-md text-stone-600 dark:text-stone-300 hover:text-amber-500 dark:hover:text-amber-400 hover:bg-stone-100 dark:hover:bg-stone-800/60 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
-                    aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
-                  >
-                    <Icon
-                      icon={isDark ? "ph:sun-bold" : "ph:moon-bold"}
-                      className="w-4 h-4"
-                    />
-                  </button>
-                )}
               </div>
 
               {/* Nav links */}

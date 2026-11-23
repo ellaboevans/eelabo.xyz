@@ -110,14 +110,14 @@ export default function RootLayout({
 }>) {
   const currentYear = new Date().getFullYear();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body
         className={`${geistMono.variable} ${geist.variable} ${openSans.variable} bg-(--background) text-(--foreground) dark:bg-(--background-dark) dark:text-(--foreground-dark) antialiased`}
       >
         <JsonLd id="global-site-schema" data={siteSchema} />
         <div className="min-h-screen w-full relative">
           <div
-            className="pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500"
+            className="pointer-events-none fixed inset-0 z-0 opacity-100"
             style={{
               background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #010540 100%)",
             }}

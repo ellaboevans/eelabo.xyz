@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
 
@@ -21,7 +20,6 @@ function normalizeCalendlyUrl(input?: string): string {
 }
 
 export default function CalendlyEmbed({ url }: Readonly<CalendlyEmbedProps>) {
-  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -31,11 +29,10 @@ export default function CalendlyEmbed({ url }: Readonly<CalendlyEmbedProps>) {
 
   const baseCalendlyUrl = normalizeCalendlyUrl(url);
 
-  // Apply site brand theme colors to Calendly widget
-  const isDark = (resolvedTheme || "dark") === "dark";
+  // Dark mode theme colors for Calendly widget
   const primaryColor = "f59e0b"; // amber-500
-  const backgroundColor = isDark ? "171717" : "ffffff";
-  const textColor = isDark ? "f5f5f5" : "1c1917";
+  const backgroundColor = "171717";
+  const textColor = "f5f5f5";
 
   const separator = baseCalendlyUrl.includes("?") ? "&" : "?";
   const embedUrl = `${baseCalendlyUrl}${separator}hide_gdpr_banner=1&hide_landing_page_details=0&primary_color=${primaryColor}&background_color=${backgroundColor}&text_color=${textColor}`;
