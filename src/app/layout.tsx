@@ -8,7 +8,6 @@ import Circle from "@/components/circle";
 import { getAbsoluteUrl, getSiteUrl, SITE_CONFIG } from "@/lib/seo/site";
 import JsonLd from "@/components/json-ld";
 import { siteSchema } from "@/schema/site-schema";
-import SmoothScroll from "@/components/smooth-scroll";
 import { Analytics } from "@vercel/analytics/next";
 import LyketProvider from "@/components/lyket-provider";
 
@@ -115,7 +114,6 @@ export default function RootLayout({
       <body
         className={`${geistMono.variable} ${geist.variable} ${openSans.variable} bg-(--background) text-(--foreground) dark:bg-(--background-dark) dark:text-(--foreground-dark) antialiased`}
       >
-        <SmoothScroll />
         <JsonLd id="global-site-schema" data={siteSchema} />
         <div className="min-h-screen w-full relative">
           <div
