@@ -23,6 +23,12 @@ export const impactMetrics = [
     icon: "ph:paint-brush-broad-bold",
   },
   {
+    label: "First Research",
+    value: "Ghanaian LangID",
+    description: "Akan varieties & error analysis in NLP",
+    icon: "ph:translate-bold",
+  },
+  {
     label: "Processed Volume",
     value: "GH₵500K+",
     description: "JED event platform & USSD offline voting",
@@ -33,12 +39,6 @@ export const impactMetrics = [
     value: "Ark Extension",
     description: "1-click environment disaster recovery",
     icon: "vscode-icons:file-type-vscode",
-  },
-  {
-    label: "Technical Writing",
-    value: "8 Articles",
-    description: "Architecture, frameworks & career stories",
-    icon: "ph:article-medium-bold",
   },
 ];
 
@@ -67,6 +67,35 @@ export const projects: Project[] = [
       "Active production project (tryinkboard.elabo.me)",
     ],
     role: "Creator & Lead Engineer",
+    year: "2026",
+  },
+  {
+    title: "Ghanaian Language Identification & Error Analysis",
+    description:
+      "First computational linguistics evaluation measuring how off-the-shelf LID systems (GlotLID, AfroLID) and linear SVM baselines perform across Twi, Fante, Nzema, and Ghanaian Pidgin.",
+    longDescription:
+      "Evans's first language research study investigating how well off-the-shelf LID systems separate closely related Ghanaian language varieties along the Akan continuum. The study reveals critical real-world failure modes: informal orthography (typing e/o instead of standard Ghanaian vowels ɛ/ɔ) causes error rates to spike up to 88%, pretrained models only recognize Ghanaian Pidgin when it resembles Nigerian Pidgin (88% recall with Nigerian markers vs 22% without), and AfroLID falls back to Wolof for 48% of unplaced Pidgin tweets. Includes custom native Nzema sentences and a hand-checked social media evaluation corpus.",
+    link: "https://github.com/ellaboevans/ghanaian-langid-eval",
+    github: "https://github.com/ellaboevans/ghanaian-langid-eval",
+    metric: "First Research",
+    image: "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?q=80&w=1200&auto=format&fit=crop",
+    stack: [
+      { label: "Python", icon: "logos:python" },
+      { label: "PyTorch", icon: "logos:pytorch-icon" },
+      { label: "Hugging Face", icon: "logos:hugging-face-icon" },
+      { label: "Scikit-Learn", icon: "logos:scikit-learn" },
+      { label: "GlotLID", icon: "ph:brain-bold" },
+      { label: "AfroLID", icon: "ph:translate-bold" },
+    ],
+    colors: "bg-purple-900/10 text-purple-400 border border-purple-500/20",
+    tag: ["research", "open-source", "nlp"],
+    highlights: [
+      "Evaluated GlotLID v3, AfroLID 1.5, and character n-gram linear SVM baseline across 5 varieties",
+      "Discovered informal orthography (missing ɛ/ɔ) causes error rates to spike from 2%–27% up to 42%–88%",
+      "Identified regional Pidgin bias (88% recall with Nigerian markers vs 22% without) and AfroLID's Wolof fallback",
+      "Authored 47 custom native Nzema sentences and hand-annotated 375 Akan social media tweets",
+    ],
+    role: "Author & Researcher",
     year: "2026",
   },
   {

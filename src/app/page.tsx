@@ -27,7 +27,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function Home() {
-  const featuredProjects = projects.slice(0, 3);
+  const featuredProjects = projects.slice(0, 4);
   return (
     <div>
       <JsonLd id="home-schema" data={homeSchema as unknown as Record<string, unknown>} />
@@ -199,9 +199,27 @@ export default function Home() {
                     rel="noopener noreferrer"
                     className="font-medium text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
                   >
-                    Live Demo
-                    <Icon icon="solar:link-round-angle-line-duotone" className="w-3.5 h-3.5" />
+                    {project.tag.includes("research") ? "Read Paper" : "Live Demo"}
+                    <Icon
+                      icon={
+                        project.tag.includes("research")
+                          ? "ph:file-text-bold"
+                          : "solar:link-round-angle-line-duotone"
+                      }
+                      className="w-3.5 h-3.5"
+                    />
                   </a>
+                  {project.github && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-1 transition-colors"
+                    >
+                      <Icon icon="line-md:github-loop" className="w-3.5 h-3.5" />
+                      GitHub
+                    </a>
+                  )}
                   {project.article && (
                     <Link
                       href={project.article}
@@ -215,6 +233,79 @@ export default function Home() {
             );
           })}
         </section>
+      </section>
+
+      {/* Computational Linguistics Research Spotlight */}
+      <section className="mt-12 rounded-2xl border border-stone-200 dark:border-stone-800 bg-linear-to-b from-stone-50/70 to-white/30 dark:from-stone-900/40 dark:to-stone-950/20 p-6 relative overflow-hidden">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-2.5">
+            <span className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+              <Icon icon="ph:translate-bold" className="w-5 h-5" />
+            </span>
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl font-bold tracking-tight">Computational Linguistics Research</h2>
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                  First Language Research
+                </span>
+              </div>
+              <p className="text-xs text-stone-500 dark:text-stone-400 mt-0.5">
+                Investigating Akan dialect continuum separation & error analysis in off-the-shelf LID systems
+              </p>
+            </div>
+          </div>
+          <a
+            href="https://github.com/ellaboevans/ghanaian-langid-eval"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-colors w-fit shrink-0"
+          >
+            <Icon icon="line-md:github-loop" className="w-4 h-4" />
+            ghanaian-langid-eval
+          </a>
+        </div>
+
+        <div className="space-y-4 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">
+          <p>
+            An empirical error analysis evaluating how well state-of-the-art LID models (
+            <span className="font-semibold text-stone-800 dark:text-stone-200">GlotLID v3</span>,{" "}
+            <span className="font-semibold text-stone-800 dark:text-stone-200">AfroLID 1.5</span>, and a character n-gram linear SVM baseline
+            ) distinguish closely related Ghanaian varieties:{" "}
+            <span className="font-semibold text-stone-800 dark:text-stone-200">Twi (Asante & Akuapem)</span>,{" "}
+            <span className="font-semibold text-stone-800 dark:text-stone-200">Fante</span>,{" "}
+            <span className="font-semibold text-stone-800 dark:text-stone-200">Nzema</span>, and{" "}
+            <span className="font-semibold text-stone-800 dark:text-stone-200">Ghanaian Pidgin</span>.
+          </p>
+
+          <div className="grid sm:grid-cols-3 gap-3">
+            <div className="p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800/80 bg-white/50 dark:bg-stone-900/50 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-semibold text-purple-400">Informal Orthography Penalty</span>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">
+                  Substituting ASCII vowels (<code className="text-amber-400 font-mono">e/o</code>) for standard Ghanaian characters (<code className="text-amber-400 font-mono">ɛ/ɔ</code>) causes error rates to spike from 2%–27% up to <span className="text-rose-400 font-semibold">42%–88%</span>.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800/80 bg-white/50 dark:bg-stone-900/50 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-semibold text-purple-400">Regional Pidgin Asymmetry</span>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">
+                  Pretrained models recognize Ghanaian Pidgin primarily when it borrows Nigerian Pidgin markers (<span className="text-stone-300 font-semibold">88%</span> recall with vs <span className="text-rose-400 font-semibold">22%</span> without). AfroLID falls back to Wolof for 48% of Pidgin tweets.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800/80 bg-white/50 dark:bg-stone-900/50 flex flex-col justify-between">
+              <div>
+                <span className="text-xs font-semibold text-purple-400">Author-Curated Datasets</span>
+                <p className="text-xs text-stone-500 dark:text-stone-400 mt-1.5 leading-relaxed">
+                  Contributed 47 custom-authored native Nzema sentences, hand-verified 375 Akan social media tweets, and designed stress tests for code-mixing and lookalike characters (Greek <code className="text-amber-400 font-mono">ε</code>, IPA <code className="text-amber-400 font-mono">ᴐ</code>).
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
       <section className=" mt-10">
         <h2 className="text-2xl font-bold mb-6">Tools</h2>

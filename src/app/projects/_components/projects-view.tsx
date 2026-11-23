@@ -7,13 +7,14 @@ import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Project } from "@/lib/constants/data";
 
-type TabType = "all" | "production" | "open-source" | "tool";
+type TabType = "all" | "research" | "production" | "open-source" | "tool";
 
 export default function ProjectsView({ projects }: Readonly<{ projects: Project[] }>) {
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
   const tabs: { label: string; value: TabType }[] = [
     { label: "All", value: "all" },
+    { label: "Research", value: "research" },
     { label: "Production", value: "production" },
     { label: "Open Source", value: "open-source" },
     { label: "Tools", value: "tool" },
@@ -159,8 +160,15 @@ export default function ProjectsView({ projects }: Readonly<{ projects: Project[
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400 hover:text-amber-500 transition-colors"
                     >
-                      <Icon icon="ph:arrow-square-out" className="w-4 h-4" />
-                      View Live
+                      <Icon
+                        icon={
+                          project.tag.includes("research")
+                            ? "ph:book-bookmark-bold"
+                            : "ph:arrow-square-out"
+                        }
+                        className="w-4 h-4"
+                      />
+                      {project.tag.includes("research") ? "Read Paper & Findings" : "View Live"}
                     </a>
 
                     {project.github && (

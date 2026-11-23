@@ -2,6 +2,8 @@ import { getDatabase } from "@/lib/db/mongodb";
 import { Comment, CommentInput, CommentResponse } from "@/lib/types/comment";
 import { NextRequest } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
 const RATE_LIMIT = 5; 
 const RATE_WINDOW = 60 * 1000; 
