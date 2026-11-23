@@ -5,7 +5,7 @@ export const homeSchema: WithContext<Person | WebSite> = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Evans Elabo",
-  jobTitle: "Software Engineer",
+  jobTitle: "Software Engineer & Researcher",
   worksFor: {
     "@type": "Organization",
     name: "AmaliTech",
@@ -18,7 +18,7 @@ export const homeSchema: WithContext<Person | WebSite> = {
     "mailto:ellaboevans@gmail.com",
   ],
   description:
-    "Evans Elabo is a Ghana-based software engineer specializing in high-performing front-ends with Angular and Next.js, and robust backends with Node.js, Prisma, and Supabase.",
+    "Evans Elabo is a Ghana-based software engineer and researcher working at the intersection of full-stack development and computational linguistics.",
   alumniOf: {
     "@type": "Organization",
     name: "Kwame Nkrumah University of Science and Technology",
@@ -32,6 +32,9 @@ export const homeSchema: WithContext<Person | WebSite> = {
     "TypeScript",
     "Supabase",
     "Golang",
+    "Computational Linguistics",
+    "Natural Language Processing",
+    "Corpus Construction",
     "Software Architecture",
     "Human-centered design",
     "Constructed languages",

@@ -10,13 +10,16 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import CalendlyButton from "@/components/calendly-button";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Software Engineer - Evans Elabo",
+  title: "Software Engineer & Researcher - Evans Elabo",
   description:
-    "I am a Ghanaian software engineer focused on system architecture, systems engineering, open-source projects, and developer tools. Writing code is always the last thing I do. I think through problems, design solutions, and build consensus before writing a single line of code.",
+    "Software engineer and researcher working at the intersection of full-stack development and computational linguistics. Building high-performing front-ends with Angular & Next.js, and researching NLP for West African languages.",
   path: "/",
   keywords: [
     "Evans Elabo",
     "Software Engineer",
+    "Researcher",
+    "Computational Linguistics",
+    "NLP",
     "TypeScript Engineer",
     "Frontend Engineer",
     "Angular Developer",
@@ -35,16 +38,17 @@ export default function Home() {
           </span>
           <p className=" text-stone-600 dark:text-stone-500 flex items-center gap-1">
             {" "}
-            <Icon icon={"circum:map-pin"} /> Software Engineer, Ghana.
+            <Icon icon={"circum:map-pin"} /> Software Engineer & Researcher, Ghana.
           </p>
         </div>
       </div>
       <div className="mt-6">
-        I specialize in building high-performing front-ends with <span>Angular</span> and{" "}
-        <span>Next.js</span>, and robust backends powered by <span>Node.js</span>,{" "}
-        <span>Prisma</span>, <span>Supabase</span> and sometimes <span>Golang</span>. I love
-        designing clean architectures, mentoring developers, and exploring the intersection of
-        technology and community growth. Outside coding, I’m deeply fascinated by{" "}
+        I am a software engineer and researcher working at the intersection of full-stack
+        development and computational linguistics. On the engineering side, I build high-performing
+        front-ends with Angular and Next.js, and robust backends powered by Node.js, Prisma,
+        Supabase, and Golang. On the research side, I investigate orthographic variation, corpus
+        construction, and NLP evaluation for West African languages as I prepare for doctoral
+        studies in Linguistics. Outside of code and corpora, I’m deeply fascinated by{" "}
         <ExternalLink href="https://en.wikipedia.org/wiki/Human-centered_design">
           human-centered design
         </ExternalLink>{" "}
@@ -55,12 +59,12 @@ export default function Home() {
         .
       </div>
       <div className="mt-6">
-        I'm always open to new opportunities and collaborations. Feel free to explore my portfolio
-        and{" "}
-        <ExternalLink target="_self" href={"/book"}>
+        I&apos;m always open to new engineering opportunities, research collaborations, and
+        conversations. Feel free to explore my portfolio and{" "}
+        <ExternalLink href="/book">
           reach out
         </ExternalLink>{" "}
-        if you'd like to work together on your next project.
+        if you&apos;d like to connect.
       </div>
       <section className="flex gap-4 py-6 text-black dark:text-stone-300 items-center">
         <div className="flex items-center gap-3 shrink-0">
