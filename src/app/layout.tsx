@@ -117,9 +117,9 @@ export default function RootLayout({
       >
         <SmoothScroll />
         <JsonLd id="global-site-schema" data={siteSchema} />
-        <div className="min-h-screen max-h-[150vh] w-full relative">
+        <div className="min-h-screen w-full relative">
           <div
-            className="absolute inset-0 z-0"
+            className="pointer-events-none fixed inset-0 z-0 opacity-0 dark:opacity-100 transition-opacity duration-500"
             style={{
               background: "radial-gradient(125% 125% at 50% 100%, #000000 40%, #010540 100%)",
             }}
@@ -164,7 +164,18 @@ export default function RootLayout({
                         >
                           エバンズ
                         </Link>
-                        <p>&copy; {currentYear} Evans Elabo | All rights reserved</p>
+                        <div className="flex items-center gap-2">
+                          <p>&copy; {currentYear} Evans Elabo | All rights reserved</p>
+                          <span>•</span>
+                          <a
+                            href="/feed.xml"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-amber-500 transition-colors"
+                          >
+                            RSS
+                          </a>
+                        </div>
                       </span>
                       <Circle />
                     </div>

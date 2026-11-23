@@ -3,6 +3,8 @@ import { format, formatDistanceToNow } from "date-fns";
 import BlogPostWrapper from "../_components/blog-post-wrapper";
 import ReadingProgressBar from "../_components/reading-progress-bar";
 import TTSAudioReader from "../_components/tts-audio-reader";
+import TableOfContents from "../_components/table-of-contents";
+import PostNavigation from "../_components/post-navigation";
 import BlogReactions from "../_components/blog-reactions";
 import { CommentSection } from "../_components/comments";
 import Image from "next/image";
@@ -33,48 +35,50 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!post) return {}; // notFound() is handled in the page below
 
-  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const canonicalUrl = `${siteUrl}/blog/${slug}`;
+  const canonicalUrl = getAbsoluteUrl(`/blog/${slug}`);
+  const defaultOg = getAbsoluteUrl(`/blog/${slug}/opengraph-image`);
   const image = post.coverImage
-    ? `${post.coverImage}`
-    : `${siteUrl}/og?title=${encodeURIComponent(post.title)}&description=${encodeURIComponent(
-        post.description
-      )}`;
-  const ogImageUrl = post.ogImage ? `${siteUrl}${post.ogImage}` : image;
+    ? (post.coverImage.startsWith("http") ? post.coverImage : getAbsoluteUrl(post.coverImage))
+    : defaultOg;
+  const ogImageUrl = post.ogImage
+    ? (post.ogImage.startsWith("http") ? post.ogImage : getAbsoluteUrl(post.ogImage))
+    : image;
 
-return {
-  title: post.title,
-  description: post.description,
-
-  alternates: {
-    canonical: canonicalUrl,
-  },
-
-  openGraph: {
-    type: "article",
-    url: canonicalUrl,
+  return {
     title: post.title,
     description: post.description,
-    publishedTime: new Date(post.createdAt).toISOString(),
-    authors: post.author ? [post.author] : undefined,
-    tags: post.keywords,
-    images: [
-      {
-        url: ogImageUrl,
-        width: 1200,
-        height: 630,
-        alt: post.title,
-      },
-    ],
-  },
 
-  twitter: {
-    card: "summary_large_image",
-    title: post.title,
-    description: post.description,
-    images: [ogImageUrl],
-  },
-};
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    openGraph: {
+      type: "article",
+      url: canonicalUrl,
+      title: post.title,
+      description: post.description,
+      publishedTime: new Date(post.createdAt).toISOString(),
+      modifiedTime: new Date(post.updatedAt).toISOString(),
+      authors: post.author ? [post.author] : [SITE_CONFIG.authorName],
+      tags: post.keywords,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      creator: SITE_CONFIG.twitterHandle,
+      images: [ogImageUrl],
+    },
+  };
 }
  
 
@@ -96,6 +100,19 @@ export default async function BlogPage({
 
   const { default: Post } = await import(`@/contents/${slug}.mdx`);
   const canonicalUrl = getAbsoluteUrl(`/blog/${slug}`);
+
+  const allPosts = await getAllContentMetadata({
+    published: true,
+    sortBy: "createdAt",
+    sortDirection: "desc",
+  });
+
+  const currentIndex = allPosts.findIndex((p) => p.slug === slug);
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+  const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+  const relatedPosts = allPosts
+    .filter((p) => p.slug !== slug && p.keywords?.some((k) => keywords?.includes(k)))
+    .slice(0, 2);
 
   const blogPostSchema: Record<string, unknown> = {
     "@context": "https://schema.org",
@@ -174,11 +191,13 @@ export default async function BlogPage({
         <Image src={coverImage} alt={title} width={500} height={500} className="h-full w-full" />
         {/* </div> */}
         <TTSAudioReader articleSelector="#tts-content" />
+        <TableOfContents />
         <div id="tts-content">
           <Post />
         </div>
       </article>
       <BlogReactions slug={slug} />
+      <PostNavigation prevPost={prevPost} nextPost={nextPost} relatedPosts={relatedPosts} />
       <CommentSection slug={slug} />
     </BlogPostWrapper>
   );

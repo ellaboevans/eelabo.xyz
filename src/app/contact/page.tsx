@@ -89,13 +89,13 @@ export default function ContactPage() {
               Prefer a Call?
             </h3>
             <p className="text-sm text-stone-600 dark:text-stone-400 mb-4">
-              Book a free 30-minute consultation to discuss your project in detail.
+              Book a free 30-minute consultation via Calendly to discuss your project in detail.
             </p>
             <Link
               href="/book"
               className="inline-flex items-center gap-2 text-amber-500 hover:text-amber-400 font-medium transition-colors"
             >
-              Schedule a Call
+              Schedule via Calendly
               <Icon icon="ph:arrow-right" className="w-4 h-4" />
             </Link>
           </div>

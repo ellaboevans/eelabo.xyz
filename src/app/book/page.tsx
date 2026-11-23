@@ -1,15 +1,16 @@
 import { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import Back from "@/components/back";
-import CalEmbed from "./_components/cal-embed";
+import CalendlyEmbed from "./_components/calendly-embed";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Wanna Talk? Book a Free Consultation with Evans Elabo",
+  title: "Book a Free Consultation with Evans Elabo",
   description:
-    "Schedule a free consultation to discuss your software development project, technical architecture, or web application needs.",
+    "Schedule a free consultation via Calendly to discuss your software development project, technical architecture, or web application needs.",
   path: "/book",
   keywords: [
     "Book Consultation",
+    "Calendly Meeting",
     "Software Development Consultation",
     "Technical Consultation",
     "Web Development Meeting",
@@ -20,7 +21,7 @@ export const metadata: Metadata = createPageMetadata({
 const consultationSteps = [
   {
     title: "Pick a Time",
-    description: "Choose a slot that works for you from the calendar below.",
+    description: "Choose a slot that works for you from the Calendly calendar below.",
   },
   {
     title: "Share Your Vision",
@@ -33,7 +34,10 @@ const consultationSteps = [
 ];
 
 export default function BookPage() {
-  const calLink = process.env.NEXT_PUBLIC_CAL_LINK || "eelabo/30min";
+  const calendlyUrl =
+    process.env.NEXT_PUBLIC_CALENDLY_URL ||
+    process.env.NEXT_PUBLIC_CALENDLY_LINK ||
+    "https://calendly.com/ellaboevans/30min";
 
   return (
     <div className="overflow-x-hidden">
@@ -44,11 +48,11 @@ export default function BookPage() {
       <h1 className="text-4xl pb-1 font-bold mt-8">Wanna Talk? Pick a Date</h1>
       <p className="dark:text-stone-400 text-stone-500 mt-2">
         Have a project in mind or need technical guidance? Let&apos;s chat! Schedule a free
-        consultation and we&apos;ll discuss how I can help bring your ideas to life.
+        consultation via Calendly and we&apos;ll discuss how I can help bring your ideas to life.
       </p>
 
-      <div className="mt-8 rounded-lg border border-stone-200 dark:border-stone-700 overflow-hidden min-h-[600px]">
-        <CalEmbed calLink={calLink} />
+      <div className="mt-8 rounded-xl overflow-hidden min-h-[680px]">
+        <CalendlyEmbed url={calendlyUrl} />
       </div>
 
       <section className="mt-12">

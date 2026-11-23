@@ -1,42 +1,169 @@
-export const projects = [
+export type Project = {
+  title: string;
+  description: string;
+  longDescription?: string;
+  link: string;
+  github?: string;
+  article?: string;
+  metric?: string;
+  image?: string;
+  stack: { label: string; icon: string }[];
+  colors: string;
+  tag: string[];
+  highlights?: string[];
+  role?: string;
+  year?: string;
+};
+
+export const impactMetrics = [
+  {
+    label: "Processed Volume",
+    value: "GH₵500K+",
+    description: "JED event platform & USSD offline voting",
+    icon: "ph:chart-line-up-bold",
+  },
+  {
+    label: "Developer Tool",
+    value: "Ark Extension",
+    description: "1-click environment disaster recovery",
+    icon: "vscode-icons:file-type-vscode",
+  },
+  {
+    label: "Technical Writing",
+    value: "8 Articles",
+    description: "Architecture, frameworks & career stories",
+    icon: "ph:article-medium-bold",
+  },
+  {
+    label: "Interactive Apps",
+    value: "4 Mini-Tools",
+    description: "SmallWorld developer experiments",
+    icon: "ph:code-bold",
+  },
+];
+
+export const projects: Project[] = [
   {
     title: "Ark: VS Code Disaster Recovery",
     description:
       "A VS Code extension that backs up and restores your entire environment (extensions, settings, keybindings) in one click. Never lose your setup again.",
+    longDescription:
+      "Ark is a disaster recovery tool for developers. It securely backs up your VS Code environment to a private GitHub Gist and restores it instantly, with a smart diff preview and one-click recovery. Open source, privacy-first, and built for productivity.",
     link: "https://marketplace.visualstudio.com/items?itemName=ellaboevans.ark-disaster-recovery",
+    github: "https://github.com/ellaboevans/ark",
+    article: "/blog/ark-never-lose-vscode-setup",
+    metric: "VS Code Marketplace",
+    image: "https://ik.imagekit.io/kkldhhslb/ark-cover.png",
     stack: [
       { label: "TypeScript", icon: "logos:typescript-icon" },
       { label: "VS Code API", icon: "vscode-icons:file-type-vscode" },
       { label: "GitHub Gist", icon: "logos:github-icon" },
     ],
-    colors: "bg-yellow-900/30 text-yellow-400 border border-dashed border-yellow-500/30",
-    tag: ["tool", "open-source", "productivity"],
-  },
-  {
-    title: "ST School",
-    description:
-      "A school management application designed to streamline administrative tasks and enhance communication between instructors, and students.",
-    link: "https://school.slightlytechie.com",
-    stack: [
-      { label: "React", icon: "logos:react" },
-      { label: "TypeScript", icon: "logos:typescript-icon" },
+    colors: "bg-yellow-900/10 text-yellow-500 border border-yellow-500/20",
+    tag: ["production", "tool", "open-source", "productivity"],
+    highlights: [
+      "One-click backup and restore",
+      "Smart diff preview before restore",
+      "Auto-backup, privacy-first (no third-party servers)",
+      "Open source and auditable",
     ],
-    colors: "bg-purple-900/30 text-purple-300 border border-dashed border-purple-500/30",
-    tag: ["frontend"],
+    role: "Creator",
+    year: "2026",
   },
   {
-    title: "JED",
+    title: "JED: Event & USSD Platform",
     description:
-      "An online event management platform that integrates an offline USSD voting system.",
+      "An online event management and ticketing platform integrated with an offline USSD voting engine.",
+    longDescription:
+      "Developed a full-stack event management solution with a unique selling point: offline voting via USSD. This allows event organizers to reach audiences without internet access while maintaining real-time vote tallying.",
     link: "https://jedevent.com",
+    article: "/blog/building-jed-startup-before-graduation",
+    metric: "GH₵500K+ Volume",
+    image: "https://ik.imagekit.io/kkldhhslb/jed-story.webp",
     stack: [
       { label: "Next.js", icon: "logos:nextjs" },
       { label: "Postgres", icon: "logos:postgres" },
       { label: "TypeScript", icon: "logos:typescript-icon" },
       { label: "Nest", icon: "logos:nest" },
     ],
-    colors: "bg-emerald-900/30 text-emerald-500 border border-dashed border-emerald-500/30",
-    tag: ["frontend", "backend"],
+    colors: "bg-emerald-900/10 text-emerald-500 border border-emerald-500/20",
+    tag: ["production", "frontend", "backend"],
+    highlights: [
+      "USSD integration for offline voting",
+      "Real-time vote tallying and settlement",
+      "Multi-event management dashboard",
+    ],
+    role: "Co-founder & Full Stack Developer",
+    year: "2024",
+  },
+  {
+    title: "ST School",
+    description:
+      "A school management application designed to streamline administrative tasks and enhance communication between instructors and students.",
+    longDescription:
+      "Built a comprehensive school management system that handles student enrollment, grade tracking, attendance management, and parent-teacher communication. The platform serves multiple schools with role-based access control.",
+    link: "https://school.slightlytechie.com",
+    metric: "Multi-School SaaS",
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop",
+    stack: [
+      { label: "React", icon: "logos:react" },
+      { label: "TypeScript", icon: "logos:typescript-icon" },
+    ],
+    colors: "bg-purple-900/10 text-purple-400 border border-purple-500/20",
+    tag: ["production", "frontend"],
+    highlights: [
+      "Role-based access control for admins, teachers, and students",
+      "Real-time grade and attendance tracking",
+      "Parent notification system",
+    ],
+    role: "Frontend Developer",
+    year: "2024",
+  },
+  {
+    title: "Schematics",
+    description:
+      "A custom Angular schematic that simplifies and standardizes the generation of Angular components with ChangeDetectionStrategy.OnPush by default.",
+    longDescription:
+      "Schematics is a custom Angular schematic that simplifies and standardizes the generation of Angular components with ChangeDetectionStrategy.OnPush by default, enforcing best practices from day one.",
+    link: "https://github.com/ellaboevans/schematics",
+    github: "https://github.com/ellaboevans/schematics",
+    article: "/blog/custom-angular-schematics",
+    metric: "OnPush Defaults",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
+    stack: [{ label: "Angular", icon: "logos:angular" }],
+    colors: "bg-cyan-900/10 text-cyan-400 border border-cyan-500/20",
+    tag: ["tool", "open-source"],
+    highlights: [
+      "Enforces OnPush performance best practices",
+      "Standardized component templates",
+      "Direct Angular CLI integration",
+    ],
+    role: "Creator",
+    year: "2024",
+  },
+  {
+    title: "Storyblok Field Plugin",
+    description:
+      "A Storyblok field plugin application showcasing fundamental features including value updates, modal toggling, and asset selection.",
+    longDescription:
+      "A custom field plugin for Storyblok CMS that extends the editor capabilities with customized asset selection, live modal dialogs, and real-time state sync.",
+    link: "https://github.com/ellaboevans/sb-cl-custom-plugin",
+    github: "https://github.com/ellaboevans/sb-cl-custom-plugin",
+    metric: "CMS Plugin",
+    image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1200&auto=format&fit=crop",
+    stack: [
+      { label: "React.js", icon: "logos:react" },
+      { label: "TypeScript", icon: "logos:typescript-icon" },
+    ],
+    colors: "bg-blue-900/10 text-blue-400 border border-blue-500/20",
+    tag: ["tool", "open-source", "CMS"],
+    highlights: [
+      "Custom field type for Storyblok CMS",
+      "Asset picker integration",
+      "Modal-based editing experience",
+    ],
+    role: "Creator",
+    year: "2024",
   },
 ];
 
@@ -107,6 +234,12 @@ export const playgrounds = [
     description:
       "An interactive environment where you can practice and learn regular expressions. ",
   },
+  {
+    name: "Truth JS",
+    path: "/playground/js",
+    description:
+      "A playground for testing and experimenting with JavaScript code snippets.",
+  },
 ];
 
 
@@ -118,14 +251,14 @@ export const techInhabitants = [
     duration: "Oct 2024 - Present",
     colors: "bg-amber-900/30 text-amber-500 border border-dashed border-amber-500/30",
     description:
-      "I contribute to several a multinational content-commerce platform by developing reusable UI components, ensuring SEO-ready performance, and implementing multi-language, multi-market features in collaboration with designers and backend teams.",
+      "I contribute to a multinational content-commerce platform by developing reusable UI components, ensuring SEO-ready performance, and implementing multi-language, multi-market features in collaboration with designers and backend teams.",
   },
   {
     name: "Slightly Techie",
     role: "Community Member",
     link: "https://slightlytechie.com/",
     duration: "Jul 2023 - Present",
-    colors: "bg-black-900/30 text-white border border-dashed border-black-500/30",
+    colors: "bg-stone-800/40 text-stone-200 border border-dashed border-stone-600/40",
     description:
       "As a community member, I actively participate in discussions, share knowledge, and contribute to various projects and initiatives aimed at fostering a supportive environment for tech professionals.",
   },

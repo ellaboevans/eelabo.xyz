@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import JsonLd from "@/components/json-ld";
 import { getAbsoluteUrl, SITE_CONFIG } from "@/lib/seo/site";
+import { Icon } from "@iconify/react";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Blog",
@@ -51,8 +52,18 @@ export default async function Blog() {
     return (
       <div className="">
         <JsonLd id="blog-list-schema" data={blogSchema} />
-        <div>
-          <h1 className="text-4xl  pb-1 font-bold mt-8">Philosophy</h1>
+        <div className="flex items-center justify-between mt-8 flex-wrap gap-2">
+          <h1 className="text-4xl pb-1 font-bold">Philosophy</h1>
+          <a
+            href="/feed.xml"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400 px-2.5 py-1 rounded-md bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
+            title="Subscribe via RSS"
+          >
+            <Icon icon="ph:rss-simple-bold" className="w-3.5 h-3.5" />
+            RSS Feed
+          </a>
         </div>
         <p>
           This is where i share my thoughts, projects and discoveries in web dev technologies and

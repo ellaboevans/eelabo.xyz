@@ -23,10 +23,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
           </span>
         );
       }
+      const match = /language-([a-zA-Z0-9_-]+)/.exec(className || "");
+      const lang = match ? match[1] : "typescript";
       return (
         <div className={`font-mono flex items-start group relative text-sm ${className}`}>
           <Code
-            lang="angular-ts"
+            lang={lang}
             theme={"github-dark"}
             className={`font-mono w-full ${className} !m-0`}
             {...props}
