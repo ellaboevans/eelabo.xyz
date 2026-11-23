@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DigitalClock from "@/components/clock";
+import CommandPalette from "@/components/command-palette";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -104,10 +105,10 @@ function Navbar() {
         className="w-full px-4 z-50 flex justify-between py-4 backdrop-blur-md sticky top-0"
         aria-label="Main Navigation"
       >
-        <section className="flex gap-8 items-center">
+        <section className="flex gap-6 items-center">
           <Link
             href="/"
-            className="font-bold text-amber-500 hover:text-amber-600 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+            className="font-bold text-amber-500 hover:text-amber-600 transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 shrink-0"
             aria-label="Home"
           >
             エバンズ
@@ -115,24 +116,27 @@ function Navbar() {
 
           {/* Desktop nav links */}
           <div className="hidden sm:block">
-            <ul className="flex gap-4" role="menubar">
+            <ul className="flex gap-3 sm:gap-4 items-center" role="menubar">
               {routes.map((route) => (
                 <li
                   key={route.label}
                   className={`${
                     isActive(route.path)
-                      ? "underline text-stone-900 dark:text-stone-100 opacity-100"
-                      : "hover:opacity-100"
-                  } opacity-60 dark:text-stone-200 transition-all duration-300`}
+                      ? "text-stone-900 dark:text-stone-100 font-medium opacity-100"
+                      : "opacity-60 hover:opacity-100"
+                  } text-xs sm:text-sm dark:text-stone-300 transition-all duration-200`}
                   role="none"
                 >
                   <Link
                     href={route.path}
-                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 p-1 rounded"
+                    className="focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 px-1 py-1 rounded relative"
                     role="menuitem"
                     aria-current={isActive(route.path) ? "page" : undefined}
                   >
                     {route.label}
+                    {isActive(route.path) && (
+                      <span className="absolute -bottom-1 left-1 right-1 h-0.5 bg-amber-500 rounded-full" />
+                    )}
                   </Link>
                 </li>
               ))}
@@ -141,11 +145,15 @@ function Navbar() {
         </section>
 
         <section className="flex gap-2 items-center">
-          <DigitalClock />
+          <CommandPalette />
+          
+          <div className="hidden sm:block text-xs">
+            <DigitalClock />
+          </div>
 
           {/* Hamburger button — mobile only */}
           <button
-            className="sm:hidden ml-2 p-1.5 rounded-md text-stone-600 dark:text-stone-300 hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
+            className="sm:hidden p-1.5 rounded-md text-stone-600 dark:text-stone-300 hover:text-amber-500 dark:hover:text-amber-400 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 cursor-pointer"
             onClick={() => setMenuOpen((prev) => !prev)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}

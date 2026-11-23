@@ -4,21 +4,32 @@ import { useState } from "react";
 import { Icon } from "@iconify/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { labManifesto } from "@/lib/constants/lab-data";
+import ContinuumExplorer from "./continuum-explorer";
+import TokenizerInspector from "./tokenizer-inspector";
 import OrthographyTester from "./orthography-tester";
 import DialectComparator from "./dialect-comparator";
 import CorpusBrowser from "./corpus-browser";
 import BibtexCard from "./bibtex-card";
 
 type TabId = "workbench" | "research" | "corpora" | "agenda";
+type WorkbenchSubTool = "continuum" | "tokentax" | "orthography" | "matrix";
 
 export default function LabView() {
   const [activeTab, setActiveTab] = useState<TabId>("workbench");
+  const [activeSubTool, setActiveSubTool] = useState<WorkbenchSubTool>("continuum");
 
   const tabs: { id: TabId; label: string; icon: string; count?: string }[] = [
-    { id: "workbench", label: "Interactive Workbench", icon: "ph:sliders-horizontal-bold" },
+    { id: "workbench", label: "Interactive Workbench", icon: "ph:sliders-horizontal-bold", count: "4 Tools" },
     { id: "research", label: "Publications & Findings", icon: "ph:file-text-bold", count: "1 Study" },
     { id: "corpora", label: "Corpora & Statements", icon: "ph:database-bold", count: "2 Datasets" },
     { id: "agenda", label: "Doctoral Inquiries", icon: "ph:graduation-cap-bold" },
+  ];
+
+  const workbenchTools: { id: WorkbenchSubTool; label: string; icon: string; badge?: string }[] = [
+    { id: "continuum", label: "Dialect Continuum & Morphing", icon: "ph:git-merge-bold", badge: "Interactive" },
+    { id: "tokentax", label: "LLM Token Tax & Byte X-Ray", icon: "ph:scissors-bold", badge: "NLP Eval" },
+    { id: "orthography", label: "Orthography & Homoglyphs", icon: "ph:text-t-bold" },
+    { id: "matrix", label: "Dialect Comparison Matrix", icon: "ph:table-bold" },
   ];
 
   return (
@@ -66,7 +77,7 @@ export default function LabView() {
         </div>
       </section>
 
-      {/* Navigation Tabs */}
+      {/* Main Navigation Tabs */}
       <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 dark:border-stone-800 pb-3">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id;
@@ -110,8 +121,83 @@ export default function LabView() {
             transition={{ duration: 0.2 }}
             className="space-y-6"
           >
-            <OrthographyTester />
-            <DialectComparator />
+            {/* Workbench Sub-Tool Switcher */}
+            <div className="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-stone-100 dark:bg-stone-900/80 border border-stone-200 dark:border-stone-800">
+              {workbenchTools.map((tool) => {
+                const isCurrent = activeSubTool === tool.id;
+                return (
+                  <button
+                    key={tool.id}
+                    type="button"
+                    onClick={() => setActiveSubTool(tool.id)}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                      isCurrent
+                        ? "bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 shadow-xs ring-1 ring-stone-200 dark:ring-stone-700"
+                        : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
+                    }`}
+                  >
+                    <Icon icon={tool.icon} className={`w-3.5 h-3.5 ${isCurrent ? "text-amber-500" : ""}`} />
+                    <span>{tool.label}</span>
+                    {tool.badge && (
+                      <span className="text-[9px] px-1.5 py-0.2 rounded-md bg-amber-500/10 text-amber-500 font-medium">
+                        {tool.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Active Sub-Tool Rendering */}
+            <AnimatePresence mode="wait">
+              {activeSubTool === "continuum" && (
+                <motion.div
+                  key="continuum"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <ContinuumExplorer />
+                </motion.div>
+              )}
+
+              {activeSubTool === "tokentax" && (
+                <motion.div
+                  key="tokentax"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <TokenizerInspector />
+                </motion.div>
+              )}
+
+              {activeSubTool === "orthography" && (
+                <motion.div
+                  key="orthography"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <OrthographyTester />
+                </motion.div>
+              )}
+
+              {activeSubTool === "matrix" && (
+                <motion.div
+                  key="matrix"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15 }}
+                >
+                  <DialectComparator />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
 
