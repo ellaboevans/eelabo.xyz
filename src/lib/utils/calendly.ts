@@ -2,6 +2,15 @@
  * Utility to launch the official Calendly popup modal widget.
  * Lazy-loads Calendly's stylesheet and JavaScript on demand to preserve fast Core Web Vitals.
  */
+
+declare global {
+  interface Window {
+    Calendly?: {
+      initPopupWidget: (options: { url: string }) => void;
+    };
+  }
+}
+
 export function openCalendly(customUrl?: string) {
   if (typeof window === "undefined") return;
 
@@ -16,8 +25,7 @@ export function openCalendly(customUrl?: string) {
     : `https://calendly.com/${url.replace(/^\/+/, "")}`;
 
   const launch = () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cal = (window as any).Calendly;
+    const cal = window.Calendly;
     if (cal && typeof cal.initPopupWidget === "function") {
       cal.initPopupWidget({ url: targetUrl });
     } else {
@@ -26,8 +34,7 @@ export function openCalendly(customUrl?: string) {
   };
 
   // If Calendly is already initialized on the window
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  if ((window as any).Calendly) {
+  if (window.Calendly) {
     launch();
     return;
   }
