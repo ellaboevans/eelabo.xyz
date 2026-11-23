@@ -261,6 +261,17 @@ export default function CommandPalette() {
           setIsOpen(false);
         },
       },
+      {
+        id: "action-linkedin",
+        title: "Open LinkedIn Profile",
+        subtitle: "linkedin.com/in/evanselabo",
+        category: "Actions",
+        icon: "logos:linkedin-icon",
+        onSelect: () => {
+          window.open("https://linkedin.com/in/evanselabo", "_blank", "noopener,noreferrer");
+          setIsOpen(false);
+        },
+      },
     ];
 
     return items;
