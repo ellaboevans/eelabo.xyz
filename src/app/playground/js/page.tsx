@@ -21,8 +21,8 @@ export default function JsPage() {
       <JsPlayground />
       <small>
         Source code available at{" "}
-        <ExternalLink href="https://github.com/ellabovans/eelabo.xyz/blob/main/src/app/playground/js/page.tsx">
-          @topia/github.io/jsplay
+        <ExternalLink href="https://github.com/ellaboevans/eelabo.xyz/blob/main/src/app/playground/js/page.tsx">
+          @eelabo/github.io/js
         </ExternalLink>
       </small>
     </div>

@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { projects, techInhabitants, tools } from "@/lib/constants/data";
+import { impactMetrics, projects, techInhabitants, tools } from "@/lib/constants/data";
 import ExternalLink from "@/components/external-link";
 import { homeSchema } from "@/schema/home-schema";
 import JsonLd from "@/components/json-ld";
@@ -79,15 +80,14 @@ export default function Home() {
         >
           <Icon icon={"line-md:twitter-x"} className=" w-6 h-6" />
         </a>
-        {/* <a
-          href="/resume.pdf"
-          download
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300"
-          aria-label="Download Resume"
+        <Link
+          href="/book"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-500/10 text-amber-500 hover:bg-amber-500/20 transition-all duration-300"
+          aria-label="Book Consultation"
         >
-          <Icon icon={"ph:file-arrow-down"} className="w-4 h-4" />
-          Resume
-        </a> */}
+          <Icon icon="ph:calendar-check" className="w-3.5 h-3.5" />
+          Book Call
+        </Link>
 
         <div className="w-full relative my-2">
           <hr className="w-full border-stone-200 dark:border-stone-700" />
@@ -96,37 +96,118 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className=" mt-10">
-        <h2 className="text-2xl font-bold mb-6">Projects</h2>
-        <section className="grid sm:grid-cols-2 mt-3 gap-4">
+
+      {/* Impact & Key Metrics */}
+      <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
+        {impactMetrics.map((metric) => (
+          <div
+            key={metric.label}
+            className="p-3.5 rounded-xl border border-stone-200/80 dark:border-stone-800/80 bg-stone-50/50 dark:bg-stone-900/40 backdrop-blur-xs flex flex-col justify-between hover:border-amber-500/40 transition-colors"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">
+                {metric.label}
+              </span>
+              <Icon icon={metric.icon} className="w-4 h-4 text-amber-500 opacity-80" />
+            </div>
+            <div>
+              <p className="text-lg font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                {metric.value}
+              </p>
+              <p className="text-[11px] text-stone-500 dark:text-stone-400 truncate mt-0.5">
+                {metric.description}
+              </p>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Featured Projects</h2>
+          <Link
+            href="/projects"
+            className="text-xs font-semibold text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
+          >
+            All Projects ({projects.length})
+            <Icon icon="ph:arrow-right" className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+        <section className="grid sm:grid-cols-2 gap-5">
           {featuredProjects.map((project) => {
             return (
-              <Link
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
+              <div
                 key={project.link}
-                className=" group"
+                className="group flex flex-col justify-between rounded-xl border border-stone-200 dark:border-stone-800 bg-white/40 dark:bg-stone-900/40 overflow-hidden hover:border-amber-500/40 transition-all duration-300 shadow-xs"
               >
-                <span className={` flex mb-2 items-center gap-2 w-fit`}>
-                  <p className={`font-bold text-sm ${project.colors} p-1  px-2 rounded-md`}>
-                    {project.title}
-                  </p>{" "}
-                  <Icon
-                    icon={"solar:link-round-angle-line-duotone"}
-                    className={` w-4 h-4 opacity-0 group-hover:opacity-100  transition-all duration-300`}
-                  />
-                </span>
-                <p className={`mb-3`}>{project.description}</p>
-              </Link>
+                <div>
+                  {project.image && (
+                    <div className="relative aspect-video w-full overflow-hidden bg-stone-100 dark:bg-stone-800 border-b border-stone-200/60 dark:border-stone-800">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 350px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      {project.metric && (
+                        <div className="absolute top-2.5 left-2.5 bg-stone-950/80 backdrop-blur-md text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[11px] font-semibold flex items-center gap-1">
+                          <Icon icon="ph:sparkle-fill" className="w-3 h-3 text-amber-400" />
+                          {project.metric}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div className="p-4">
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <h3 className="font-bold text-stone-900 dark:text-stone-100 group-hover:text-amber-500 transition-colors">
+                        {project.title}
+                      </h3>
+                      {project.year && (
+                        <span className="text-[11px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-500">
+                          {project.year}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-stone-600 dark:text-stone-300 line-clamp-2 leading-relaxed mb-3">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-1">
+                      {project.stack.slice(0, 3).map((tech) => (
+                        <span
+                          key={tech.label}
+                          className="inline-flex items-center gap-1 text-[11px] px-1.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 text-stone-600 dark:text-stone-400 border border-stone-200/60 dark:border-stone-800"
+                        >
+                          <Icon icon={tech.icon} className="w-3 h-3" />
+                          {tech.label}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="px-4 py-3 bg-stone-50/60 dark:bg-stone-900/60 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-xs">
+                  <a
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-amber-500 hover:text-amber-400 flex items-center gap-1 transition-colors"
+                  >
+                    Live Demo
+                    <Icon icon="solar:link-round-angle-line-duotone" className="w-3.5 h-3.5" />
+                  </a>
+                  {project.article && (
+                    <Link
+                      href={project.article}
+                      className="text-stone-500 hover:text-stone-800 dark:hover:text-stone-200 flex items-center gap-1 transition-colors"
+                    >
+                      Case Study →
+                    </Link>
+                  )}
+                </div>
+              </div>
             );
           })}
-          <Link
-            href={"/projects"}
-            className=" flex items-center gap-0 underline hover:gap-1 transition-all duration-300"
-          >
-            Featured Projects <Icon className="rotate-45!" icon={"stash:arrow-up-light"} />
-          </Link>
         </section>
       </section>
       <section className=" mt-10">
